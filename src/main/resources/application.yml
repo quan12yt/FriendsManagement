@@ -1,0 +1,15 @@
+spring:
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+  datasource:
+    driverClassName: org.postgresql.Driver
+    initialization-mode: always
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/friends_management
+    username: postgres
+    password: postgres
+  main:
+    banner-mode: off
