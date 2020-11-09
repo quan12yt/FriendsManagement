@@ -11,7 +11,5 @@ import java.util.Optional;
 
 @Repository
 public interface FriendRelationshipRepository extends JpaRepository<FriendRelationship, Long> {
-    @Query(value = "select * from friend_relationship where email_id = :email and friend_id = :friend"
-            , nativeQuery = true)
-    List<FriendRelationship> findByEmailIdAndFriendId(@Param("email") Long emailId, @Param("friend") Long friendId);
+    Optional<FriendRelationship> findByEmailIdAndFriendId( Long emailId,Long friendId);
 }

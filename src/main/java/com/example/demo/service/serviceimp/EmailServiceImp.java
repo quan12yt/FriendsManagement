@@ -26,6 +26,8 @@ public class EmailServiceImp implements EmailService {
     @Autowired
     EmailRepository emailRepository;
     @Autowired
+    FriendRelationshipRepository relationshipRepository;
+    @Autowired
     FriendRelationshipRepository friendRelationshipRepository;
     private ConverterUtils converter = new ConverterUtils();
     private EmailUtil emailUtil = new EmailUtil();
@@ -89,11 +91,11 @@ public class EmailServiceImp implements EmailService {
             body.put("Error", "Both emails have to be in database");
             return new ResponseEntity<Map<String, Object>>(body, HttpStatus.BAD_REQUEST);
         }
-        if(emailUtil.getRelationshipStatus(email1,email2) ==  FriendStatus.BLOCK) {
+        if (this.getRelationshipStatus(email1, email2) == FriendStatus.BLOCK) {
             body.put("Error", "This email has been blocked !!");
             return new ResponseEntity<Map<String, Object>>(body, HttpStatus.BAD_REQUEST);
         }
-        if (emailUtil.isFriendOf(email1, email2)) {
+        if (this.getRelationshipStatus(email1, email2) == FriendStatus.FRIEND) {
             body.put("Error", "Two Email have already being friend");
             return new ResponseEntity<Map<String, Object>>(body, HttpStatus.BAD_REQUEST);
         }
@@ -170,21 +172,28 @@ public class EmailServiceImp implements EmailService {
             body.put("Error", "Both emails have to be in database");
             return new ResponseEntity<Map<String, Object>>(body, HttpStatus.BAD_REQUEST);
         }
-//        if(emailUtil.checkIfBlock(email1,email2)) {
-//            body.put("Error", "This email has been blocked !!");
-//            return new ResponseEntity<Map<String, Object>>(body, HttpStatus.BAD_REQUEST);
-//        }
-        if (emailUtil.isFriendOf(targetEmail, requestEmail)) {
-            body.put("Error", "Two Email have already being friend");
+        if (this.getRelationshipStatus(requestEmail, targetEmail) == FriendStatus.BLOCK) {
+            body.put("Error", "This email has already being blocked !!");
             return new ResponseEntity<Map<String, Object>>(body, HttpStatus.BAD_REQUEST);
         }
+
         FriendRelationship relationship = new FriendRelationship
-                (requestEmail.getEmailId(), targetEmail.getEmailId(), FriendStatus.FRIEND + "");
-        FriendRelationship relationship1 = new FriendRelationship
-                (relationship.getEmailId(), targetEmail.getEmailId(), FriendStatus.FRIEND + "");
-        friendRelationshipRepository.save(relationship);
-        friendRelationshipRepository.save(relationship1);
+                (requestEmail.getEmailId(), targetEmail.getEmailId(), String.valueOf(FriendStatus.SUBSCRIBE));
+        friendRelationshipRepository.findById(relationship.getRelationshipId()).map(
+                friendRelationship ->{
+                    friendRelationship.setStatus(String.valueOf(FriendStatus.SUBSCRIBE));
+                   return friendRelationshipRepository.save(friendRelationship);
+                }
+        ).orElseGet(() -> {
+            return relationshipRepository.save(relationship);
+        });
         body.put("success", "true");
         return new ResponseEntity<Map<String, Object>>(body, HttpStatus.CREATED);
+    }
+
+    public FriendStatus getRelationshipStatus(Email email1, Email email2) {
+        Optional<FriendRelationship> friendRelationship = relationshipRepository
+                .findByEmailIdAndFriendId(email1.getEmailId(), email2.getEmailId());
+        return FriendStatus.valueOf(friendRelationship.get().getStatus());
     }
 }

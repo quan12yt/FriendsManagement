@@ -35,6 +35,8 @@ public class FriendRelationship {
         this.emailId = emailId;
         this.friendId = friendId;
         this.status = s;
+        this.setEmail(null);
+        this.setFriendEmail(null);
 
     }
 }

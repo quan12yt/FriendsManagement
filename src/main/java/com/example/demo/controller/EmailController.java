@@ -4,6 +4,7 @@ import com.example.demo.dto.EmailDTO;
 import com.example.demo.model.FriendRelationship;
 import com.example.demo.payload.AddFriendRequest;
 import com.example.demo.payload.EmailRequest;
+import com.example.demo.payload.SubscribeRequest;
 import com.example.demo.repository.FriendRelationshipRepository;
 import com.example.demo.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,10 +49,8 @@ public class EmailController {
         return emailService.getFriendList(emailRequest);
     }
 
-//    @GetMapping("/re")
-//    public ResponseEntity<?> getAllRelationship() {
-//        List<String> emailDTOS = relationshipRepository.findAll().stream().map(i -> i.getStatus()).collect(Collectors.toList());
-//
-//        return ResponseEntity.ok(emailDTOS);
-//    }
+    @PostMapping("/subscribe")
+    public ResponseEntity<Map<String, Object>> subscribeTo(@Valid @RequestBody SubscribeRequest subscribeRequest){
+        return emailService.subscribeTo(subscribeRequest);
+    }
 }
