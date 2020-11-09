@@ -26,8 +26,9 @@ public class ConverterUtils {
 
     public Email convertToEmailEntity(EmailDTO emailDTO) {
         Email email = modelMapper.map(emailDTO, Email.class);
-        Optional<Email> tmp = emailRepository.findById(emailDTO.getEmailId());
+        Optional<Email> tmp = emailRepository.findByEmail(emailDTO.getEmail());
         if (tmp.isPresent()) {
+            email.setEmailId(tmp.get().getEmailId());
             email.setFriends(tmp.get().getFriends());
         }
         return email;

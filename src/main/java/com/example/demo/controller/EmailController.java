@@ -1,9 +1,10 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.EmailDTO;
-import com.example.demo.dto.FriendRelationshipDTO;
-import com.example.demo.model.Email;
+import com.example.demo.model.FriendRelationship;
+import com.example.demo.payload.AddFriendRequest;
 import com.example.demo.payload.EmailRequest;
+import com.example.demo.repository.FriendRelationshipRepository;
 import com.example.demo.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,8 @@ import java.util.stream.Collectors;
 public class EmailController {
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private FriendRelationshipRepository relationshipRepository;
 
     @GetMapping
     public ResponseEntity<?> getAllEmails() {
@@ -31,19 +34,24 @@ public class EmailController {
         return ResponseEntity.ok(emailDTOS);
     }
 
-    @GetMapping("/friends")
-    public ResponseEntity<Map<String, Object>> getFriendListByEmail(@Valid @RequestBody EmailRequest email) {
-        List<String> tmp = emailService.getFriendList(email.getEmail());
-        Map<String, Object> body = new HashMap<>();
-        if (tmp.isEmpty()) {
-            body.put("Error","Invalid request");
-            return new ResponseEntity<Map<String, Object>>(body, HttpStatus.BAD_REQUEST);
-        }
-        body.put("success","true");
-        body.put("friends",tmp);
-        body.put("count",tmp.size());
-        return new ResponseEntity<Map<String, Object>>(body, HttpStatus.OK);
-
+    @PostMapping
+    public ResponseEntity<Map<String, Object>> addFriend(@Valid @RequestBody AddFriendRequest friendRequest){
+        return emailService.addFriend(friendRequest);
+    }
+    @PostMapping("/common")
+    public ResponseEntity<Map<String, Object>> getCommonFriends(@Valid @RequestBody AddFriendRequest friendRequest){
+        return emailService.getCommonFriends(friendRequest);
     }
 
+    @PostMapping("/friends")
+    public ResponseEntity<Map<String, Object>> getFriends(@Valid @RequestBody EmailRequest emailRequest){
+        return emailService.getFriendList(emailRequest);
+    }
+
+//    @GetMapping("/re")
+//    public ResponseEntity<?> getAllRelationship() {
+//        List<String> emailDTOS = relationshipRepository.findAll().stream().map(i -> i.getStatus()).collect(Collectors.toList());
+//
+//        return ResponseEntity.ok(emailDTOS);
+//    }
 }

@@ -4,13 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmailRequest {
-    @NotNull(message = "Email mustn't be empty or null")
-    private String email;
+public class AddFriendRequest {
+   @NotNull(message = "Invalid Request body")
+   private List<String> friends ;
 }

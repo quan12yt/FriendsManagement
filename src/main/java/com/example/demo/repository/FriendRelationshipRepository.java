@@ -1,13 +1,17 @@
 package com.example.demo.repository;
 
-import com.example.demo.model.Email;
 import com.example.demo.model.FriendRelationship;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-public interface FriendRelationshipRepository extends JpaRepository<FriendRelationship,Long> {
-//    List<FriendRelationship> findByEmailId(Long emailId);
+public interface FriendRelationshipRepository extends JpaRepository<FriendRelationship, Long> {
+    @Query(value = "select * from friend_relationship where email_id = :email and friend_id = :friend"
+            , nativeQuery = true)
+    List<FriendRelationship> findByEmailIdAndFriendId(@Param("email") Long emailId, @Param("friend") Long friendId);
 }

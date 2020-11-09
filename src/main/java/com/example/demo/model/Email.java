@@ -1,30 +1,33 @@
 package com.example.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Table(name = "email", schema = "public")
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Email {
 
     @Id
-    @GeneratedValue
-    @Column(name = "email_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "email_id", nullable = false)
     private Long emailId;
 
     @Column(name = "email")
     private String email;
 
     @ManyToMany
-    @JoinTable(name = "friend_relationship" , joinColumns = @JoinColumn(name = "email_id"),inverseJoinColumns = @JoinColumn(name = "friend_id"))
-    @JsonIgnoreProperties("friends")
+    @JoinTable(name = "friend_relationship", joinColumns = @JoinColumn(name = "email_id"), inverseJoinColumns = @JoinColumn(name = "friend_id"))
+    @JsonIgnoreProperties("emailOne")
     private Set<Email> friends;
+
+
+
+
 }
