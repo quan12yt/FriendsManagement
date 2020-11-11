@@ -1,20 +1,24 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.EmailDTO;
-import com.example.demo.dto.FriendRelationshipDTO;
-import com.example.demo.model.Email;
-import com.example.demo.payload.AddFriendRequest;
+import com.example.demo.payload.AddAndGetCommonRequest;
 import com.example.demo.payload.EmailRequest;
-import com.example.demo.payload.SubscribeRequest;
+import com.example.demo.payload.RetrieveRequest;
+import com.example.demo.payload.SubscribeAndBlockRequest;
 import org.springframework.http.ResponseEntity;
 
-import java.util.List;
 import java.util.Map;
 
 public interface EmailService {
-    List<EmailDTO> getAllEmails();
+
     ResponseEntity<Map<String, Object>> getFriendList(EmailRequest emailRequest);
-    ResponseEntity<Map<String, Object>> addFriend(AddFriendRequest friendRequest);
-    ResponseEntity<Map<String, Object>> getCommonFriends(AddFriendRequest friendRequest);
-    ResponseEntity<Map<String, Object>> subscribeTo(SubscribeRequest subscribeRequest);
+
+    ResponseEntity<Map<String, Object>> addFriend(AddAndGetCommonRequest friendRequest);
+
+    ResponseEntity<Map<String, Object>> getCommonFriends(AddAndGetCommonRequest friendRequest);
+
+    ResponseEntity<Map<String, Object>> subscribeTo(SubscribeAndBlockRequest subscribeRequest);
+
+    ResponseEntity<Map<String, Object>> blockEmail(SubscribeAndBlockRequest subscribeRequest);
+
+    ResponseEntity<Map<String, Object>> retrieveEmails(RetrieveRequest retrieveRequest);
 }

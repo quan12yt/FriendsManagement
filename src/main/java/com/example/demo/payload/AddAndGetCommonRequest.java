@@ -5,13 +5,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SubscribeRequest {
-    @NotNull(message = "Invalid Request body")
-    private String requester;
-    @NotNull(message = "Invalid Request body")
-    private String target;
+public class AddAndGetCommonRequest {
+   @NotNull(message = "List email must not be null or empty")
+   private List<String> friends ;
 }
