@@ -47,9 +47,7 @@ public class EmailServiceImpTest {
     @Mock
     private FriendRelationshipRepository relationshipRepository;
 
-    @InjectMocks
     private EmailRequest emailRequest;
-    @InjectMocks
     private AddAndGetCommonRequest addCommonRequest;
 
     private List<FriendRelationship> listRelationships;
@@ -120,8 +118,8 @@ public class EmailServiceImpTest {
         when(relationshipRepository.findByEmailIdAndFriendId
                 (emailTest1.getEmailId(), emailTest2.getEmailId()))
                 .thenReturn(Optional.empty());
-        when(relationshipRepository.save(any())).thenReturn(friendRelationship1);
-        when(relationshipRepository.save(any())).thenReturn(friendRelationship1);
+//        when(relationshipRepository.save(friendRelationship1)).thenReturn(friendRelationship1);
+//        when(relationshipRepository.save(friendRelationship2)).thenReturn(friendRelationship2);
         responseEntity = emailService.addFriend(addCommonRequest);
 
         List<String> emails = (List<String>) responseEntity.getBody().get("friends");

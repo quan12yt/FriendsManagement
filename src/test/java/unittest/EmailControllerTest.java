@@ -52,10 +52,10 @@ public class EmailControllerTest {
     private EmailService emailService;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    private EmailRequest emailRequest = mock(EmailRequest.class);
-    private AddAndGetCommonRequest addCommonRequest = mock(AddAndGetCommonRequest.class);
-    private SubscribeAndBlockRequest subBlockRequest = mock(SubscribeAndBlockRequest.class);
-    private RetrieveRequest retrieveRequest = mock(RetrieveRequest.class);
+    private EmailRequest emailRequest;
+    private AddAndGetCommonRequest addCommonRequest;
+    private SubscribeAndBlockRequest subBlockRequest;
+    private RetrieveRequest retrieveRequest;
     List<String> listEmail;
 
     @Before
@@ -286,6 +286,7 @@ public class EmailControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath
                         ("$.success", CoreMatchers.is("true")));
     }
+
     @Test
     public void blockEmailInvalidInputTest() throws Exception {
         Map<String, Object> body = new HashMap<>();
@@ -332,6 +333,7 @@ public class EmailControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath
                         ("$.recipients[0]", CoreMatchers.is(listEmail.get(0))));
     }
+
     @Test
     public void retrieveEmailInvalidTest() throws Exception {
         Map<String, Object> body = new HashMap<>();

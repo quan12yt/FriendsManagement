@@ -28,8 +28,6 @@ public class EmailServiceImp implements EmailService {
     EmailRepository emailRepository;
     @Autowired
     FriendRelationshipRepository relationshipRepository;
-    @Autowired
-    FriendRelationshipRepository friendRelationshipRepository;
     private final EmailUtils emailUtil = new EmailUtils();
 
 
@@ -104,8 +102,8 @@ public class EmailServiceImp implements EmailService {
                 (email1.getEmailId(), email2.getEmailId(), FriendStatus.FRIEND + "");
         FriendRelationship inverseRelationship = new FriendRelationship
                 (email2.getEmailId(), email1.getEmailId(), FriendStatus.FRIEND + "");
-        friendRelationshipRepository.save(relationship);
-        friendRelationshipRepository.save(inverseRelationship);
+        relationshipRepository.save(relationship);
+        relationshipRepository.save(inverseRelationship);
         body.put("success", "true");
         return new ResponseEntity<>(body, HttpStatus.CREATED);
     }
