@@ -50,10 +50,10 @@ public class EmailServiceImp implements EmailService {
             return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
         }
         Email email = emailOptional.get();
-        if (email.getFriends().isEmpty()) {
-            body.put("Error", "Friends not found");
-            return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
-        }
+//        if (email.getFriends().isEmpty()) {
+//            body.put("Error", "Friends not found");
+//            return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+//        }
         List<String> list = relationshipRepository
                 .findByEmailIdAndStatus(email.getEmailId()
                         , String.valueOf(FriendStatus.FRIEND))

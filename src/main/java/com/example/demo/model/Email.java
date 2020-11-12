@@ -28,7 +28,8 @@ public class Email {
     private Set<Email> friends;
 
 
-
-
-
+    public Email(Long emailId, String email) {
+        this.emailId = emailId;
+        this.email = email;
+    }
 }
