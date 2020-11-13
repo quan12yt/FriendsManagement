@@ -6,7 +6,7 @@ import com.example.demo.payload.SubscribeAndBlockRequest;
 public class RequestValidation {
 
     public static String checkAddAndSubscribeRequest(AddAndGetCommonRequest request) {
-        if (request.getFriends() == null || request == null) {
+        if (request == null || request.getFriends() == null) {
             return "Invalid request";
         }
         if (request.getFriends().size() != 2) {
@@ -17,21 +17,21 @@ public class RequestValidation {
             return "Invalid email";
         }
         if (request.getFriends().get(0).equals(request.getFriends().get(1))) {
-            return "Same email error ";
+            return "Same email error";
         }
         return "";
     }
 
     public static String checkSubscribeAndBlockRequest(SubscribeAndBlockRequest request) {
-        if (request.getRequester() == null || request.getTarget() == null) {
-            return "Invalid Request";
+        if (request == null || request.getRequester() == null || request.getTarget() == null) {
+            return "Invalid request";
         }
         if (!EmailValidation.isEmail(request.getRequester())
                 || !EmailValidation.isEmail(request.getTarget())) {
             return "Invalid requester or target email";
         }
         if (request.getRequester().equals(request.getTarget())) {
-            return "Same email error ";
+            return "Same email error";
         }
         return "";
     }

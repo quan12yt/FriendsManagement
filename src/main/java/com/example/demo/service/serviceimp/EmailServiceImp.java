@@ -48,10 +48,7 @@ public class EmailServiceImp implements EmailService {
             return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
         }
         Email email = emailOptional.get();
-//        if (email.getFriends().isEmpty()) {
-//            body.put("Error", "Friends not found");
-//            return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
-//        }
+
         List<String> list = relationshipRepository
                 .findByEmailIdAndStatus(email.getEmailId()
                         , String.valueOf(FriendStatus.FRIEND))
@@ -68,8 +65,8 @@ public class EmailServiceImp implements EmailService {
     public ResponseEntity<Map<String, Object>> addFriend(AddAndGetCommonRequest friendRequest) {
         Map<String, Object> body = new HashMap<>();
         String error = RequestValidation.checkAddAndSubscribeRequest(friendRequest);
-        if(!(error == "")){
-            body.put("Error",error);
+        if (!(error == "")) {
+            body.put("Error", error);
             return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
         }
         Optional<Email> optionalEmail1 = emailRepository.
@@ -77,15 +74,11 @@ public class EmailServiceImp implements EmailService {
         Optional<Email> optionalEmail2 = emailRepository
                 .findByEmail(friendRequest.getFriends().get(1));
         if (optionalEmail1.isEmpty() || optionalEmail2.isEmpty()) {
-            body.put("Error", "Invalid Email");
+            body.put("Error", "Both emails have to be in database");
             return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
         }
         Email email1 = optionalEmail1.get();
         Email email2 = optionalEmail2.get();
-        if (email1.getEmailId() == null || email2.getEmailId() == null) {
-            body.put("Error", "Both emails have to be in database");
-            return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
-        }
         Optional<FriendRelationship> friendRelationship = relationshipRepository
                 .findByEmailIdAndFriendId(email1.getEmailId(), email2.getEmailId());
         if (friendRelationship.isPresent()) {
@@ -112,8 +105,8 @@ public class EmailServiceImp implements EmailService {
     public ResponseEntity<Map<String, Object>> getCommonFriends(AddAndGetCommonRequest friendRequest) {
         Map<String, Object> body = new HashMap<>();
         String error = RequestValidation.checkAddAndSubscribeRequest(friendRequest);
-        if(!(error == "")){
-            body.put("Error",error);
+        if (!(error == "")) {
+            body.put("Error", error);
             return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
         }
         Optional<Email> optionalEmail1 = emailRepository.
@@ -143,8 +136,8 @@ public class EmailServiceImp implements EmailService {
     public ResponseEntity<Map<String, Object>> subscribeTo(SubscribeAndBlockRequest subscribeRequest) {
         Map<String, Object> body = new HashMap<>();
         String error = RequestValidation.checkSubscribeAndBlockRequest(subscribeRequest);
-        if(!(error == "")){
-            body.put("Error",error);
+        if (!(error == "")) {
+            body.put("Error", error);
             return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
         }
         Optional<Email> optionalEmail1 = emailRepository.
@@ -152,7 +145,7 @@ public class EmailServiceImp implements EmailService {
         Optional<Email> optionalEmail2 = emailRepository
                 .findByEmail(subscribeRequest.getTarget());
         if (optionalEmail1.isEmpty() || optionalEmail2.isEmpty()) {
-            body.put("Error", "Email not exist");
+            body.put("Error", "Requester or target email not existed");
             return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
         }
         Email requestEmail = optionalEmail1.get();
@@ -185,8 +178,8 @@ public class EmailServiceImp implements EmailService {
     public ResponseEntity<Map<String, Object>> blockEmail(SubscribeAndBlockRequest subscribeRequest) {
         Map<String, Object> body = new HashMap<>();
         String error = RequestValidation.checkSubscribeAndBlockRequest(subscribeRequest);
-        if(!(error == "")){
-            body.put("Error",error);
+        if (!(error == "")) {
+            body.put("Error", error);
             return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
         }
         Optional<Email> optionalEmail1 = emailRepository.
@@ -194,7 +187,7 @@ public class EmailServiceImp implements EmailService {
         Optional<Email> optionalEmail2 = emailRepository
                 .findByEmail(subscribeRequest.getTarget());
         if (optionalEmail1.isEmpty() || optionalEmail2.isEmpty()) {
-            body.put("Error", "Email not exist in database");
+            body.put("Error", "Requester or target email not existed");
             return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
         }
         Email requestEmail = optionalEmail1.get();
@@ -224,8 +217,12 @@ public class EmailServiceImp implements EmailService {
     @Override
     public ResponseEntity<Map<String, Object>> retrieveEmails(RetrieveRequest retrieveRequest) {
         Map<String, Object> body = new HashMap<>();
-        if (retrieveRequest.getSender() == null || retrieveRequest.getText() == null) {
-            body.put("Error", "Invalid Request");
+        if (retrieveRequest == null || retrieveRequest.getSender() == null || retrieveRequest.getText() == null) {
+            body.put("Error", "Invalid request");
+            return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+        }
+        if (!EmailValidation.isEmail(retrieveRequest.getSender())) {
+            body.put("Error", "Invalid sender email");
             return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
         }
         Optional<Email> senderEmail = emailRepository.findByEmail(retrieveRequest.getSender());

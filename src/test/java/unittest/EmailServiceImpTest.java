@@ -116,9 +116,27 @@ public class EmailServiceImpTest {
         assertTrue(emails.contains(emailTest2.getEmail()));
         assertTrue(emails.contains(emailTest3.getEmail()));
     }
+    @Test
+    public void testGetFriendsInvalidRequest() {
+        responseEntity = emailService.getFriendList(null);
+        assertSame("Invalid request", responseEntity.getBody().get("Error"));
+    }
+    @Test
+    public void testGetFriendsInvalidEmail() {
+        emailRequest = new EmailRequest("");
+        responseEntity = emailService.getFriendList(emailRequest);
+        assertSame("Invalid email", responseEntity.getBody().get("Error"));
+    }
+    @Test
+    public void testGetFriendsNotExistEmail() {
+        emailRequest = new EmailRequest(emailTest1.getEmail());
+        when(emailRepository.findByEmail(emailTest1.getEmail())).thenReturn(Optional.empty());
+        responseEntity = emailService.getFriendList(emailRequest);
+        assertSame("Email not found in database", responseEntity.getBody().get("Error"));
+    }
 
     @Test
-    public void testAddFriendsSuccess() {
+    public void testAddFriendSuccess() {
         addCommonRequest = new AddAndGetCommonRequest
                 (Arrays.asList(emailTest1.getEmail(), emailTest2.getEmail()));
         when(emailRepository.findByEmail(emailTest1.getEmail()))
@@ -131,7 +149,61 @@ public class EmailServiceImpTest {
         responseEntity = emailService.addFriend(addCommonRequest);
 
         assertSame("true", responseEntity.getBody().get("success"));
-
+    }
+    @Test
+    public void testAddFriendInvalidRequest() {
+        responseEntity = emailService.addFriend(null);
+        assertSame("Invalid request", responseEntity.getBody().get("Error"));
+    }
+    @Test
+    public void testAddFriendLackEmail() {
+        addCommonRequest = new AddAndGetCommonRequest(Collections.singletonList("qw@gmail.com"));
+        responseEntity = emailService.addFriend(addCommonRequest);
+        assertSame("Must contains 2 emails", responseEntity.getBody().get("Error"));
+    }
+    @Test
+    public void testAddFriendInvalidEmail() {
+        addCommonRequest = new AddAndGetCommonRequest(Arrays.asList("qw@gmail.com","asdasdas@g"));
+        responseEntity = emailService.addFriend(addCommonRequest);
+        assertSame("Invalid email", responseEntity.getBody().get("Error"));
+    }
+    @Test
+    public void testAddFriendSameEmail() {
+        addCommonRequest = new AddAndGetCommonRequest(Arrays.asList("qw@gmail.com","qw@gmail.com"));
+        responseEntity = emailService.addFriend(addCommonRequest);
+        assertSame("Same email error", responseEntity.getBody().get("Error"));
+    }
+    @Test
+    public void testAddFriendNotExistEmail() {
+        addCommonRequest = new AddAndGetCommonRequest(Arrays.asList("q@gmail.com","qw@gmail.com"));
+        responseEntity = emailService.addFriend(addCommonRequest);
+        assertSame("Both emails have to be in database", responseEntity.getBody().get("Error"));
+    }
+    @Test
+    public void testAddFriendBlockedEmail() {
+        addCommonRequest = new AddAndGetCommonRequest(Arrays.asList(emailTest1.getEmail(),emailTest2.getEmail()));
+        when(emailRepository.findByEmail(emailTest1.getEmail()))
+                .thenReturn(Optional.of(emailTest1));
+        when(emailRepository.findByEmail(emailTest2.getEmail()))
+                .thenReturn(Optional.of(emailTest2));
+        when(relationshipRepository.findByEmailIdAndFriendId
+                (emailTest1.getEmailId(), emailTest2.getEmailId()))
+                .thenReturn(Optional.ofNullable(blockRelationship1));
+        responseEntity = emailService.addFriend(addCommonRequest);
+        assertSame("This email has been blocked !!", responseEntity.getBody().get("Error"));
+    }
+    @Test
+    public void testAddFriendOldFriend() {
+        addCommonRequest = new AddAndGetCommonRequest(Arrays.asList(emailTest1.getEmail(),emailTest2.getEmail()));
+        when(emailRepository.findByEmail(emailTest1.getEmail()))
+                .thenReturn(Optional.of(emailTest1));
+        when(emailRepository.findByEmail(emailTest2.getEmail()))
+                .thenReturn(Optional.of(emailTest2));
+        when(relationshipRepository.findByEmailIdAndFriendId
+                (emailTest1.getEmailId(), emailTest2.getEmailId()))
+                .thenReturn(Optional.ofNullable(friendRelationship1));
+        responseEntity = emailService.addFriend(addCommonRequest);
+        assertSame("Two Email have already being friend", responseEntity.getBody().get("Error"));
     }
 
     @Test
@@ -161,6 +233,36 @@ public class EmailServiceImpTest {
         assertTrue(emails.contains(emailTest1.getEmail()));
 
     }
+    @Test
+    public void testGetCommonInvalidRequest() {
+        responseEntity = emailService.getCommonFriends(null);
+        assertSame("Invalid request", responseEntity.getBody().get("Error"));
+    }
+    @Test
+    public void testGetCommonLackEmail() {
+        addCommonRequest = new AddAndGetCommonRequest(Collections.singletonList("qw@gmail.com"));
+        responseEntity = emailService.getCommonFriends(addCommonRequest);
+        assertSame("Must contains 2 emails", responseEntity.getBody().get("Error"));
+    }
+    @Test
+    public void testGetCommonInvalidEmail() {
+        addCommonRequest = new AddAndGetCommonRequest(Arrays.asList("qw@gmail.com","asdasdas@g"));
+        responseEntity = emailService.getCommonFriends(addCommonRequest);
+        assertSame("Invalid email", responseEntity.getBody().get("Error"));
+    }
+    @Test
+    public void testGetCommonSameEmail() {
+        addCommonRequest = new AddAndGetCommonRequest(Arrays.asList("qw@gmail.com","qw@gmail.com"));
+        responseEntity = emailService.getCommonFriends(addCommonRequest);
+        assertSame("Same email error", responseEntity.getBody().get("Error"));
+    }
+    @Test
+    public void testGetCommonNotExistEmail() {
+        addCommonRequest = new AddAndGetCommonRequest(Arrays.asList("q@gmail.com","qw@gmail.com"));
+        responseEntity = emailService.getCommonFriends(addCommonRequest);
+        assertSame("Email not exist", responseEntity.getBody().get("Error"));
+    }
+
 
     @Test
     public void testSubscribeSuccess() {
@@ -176,6 +278,68 @@ public class EmailServiceImpTest {
     }
 
     @Test
+    public void testSubscribeInvalidRequest() {
+        responseEntity = emailService.subscribeTo(null);
+        assertSame("Invalid request", responseEntity.getBody().get("Error"));
+    }
+
+    @Test
+    public void testSubscribeInvalidEmail() {
+        subBlockRequest = new SubscribeAndBlockRequest("", "emailTest5.getEmail()");
+        responseEntity = emailService.subscribeTo(subBlockRequest);
+        assertSame("Invalid requester or target email", responseEntity.getBody().get("Error"));
+    }
+
+    @Test
+    public void testSubscribeSameEmail() {
+        subBlockRequest = new SubscribeAndBlockRequest("qw@gmail.com", "qw@gmail.com");
+        responseEntity = emailService.subscribeTo(subBlockRequest);
+        assertSame("Same email error", responseEntity.getBody().get("Error"));
+    }
+    @Test
+    public void testSubscribeNotExistEmail() {
+        subBlockRequest = new SubscribeAndBlockRequest(emailTest1.getEmail(), emailTest2.getEmail());
+        when(emailRepository.findByEmail(emailTest1.getEmail())).thenReturn(Optional.empty());
+        when(emailRepository.findByEmail(emailTest2.getEmail())).thenReturn(Optional.empty());
+
+        responseEntity = emailService.subscribeTo(subBlockRequest);
+        assertSame("Requester or target email not existed", responseEntity.getBody().get("Error"));
+    }
+    @Test
+    public void testSubscribeBlockedEmail() {
+        subBlockRequest = new SubscribeAndBlockRequest(emailTest1.getEmail(), emailTest2.getEmail());
+        when(emailRepository.findByEmail(emailTest1.getEmail())).thenReturn(Optional.ofNullable(emailTest1));
+        when(emailRepository.findByEmail(emailTest2.getEmail())).thenReturn(Optional.ofNullable(emailTest2));
+        when(relationshipRepository.findByEmailIdAndFriendId(emailTest1.getEmailId(), emailTest2.getEmailId()))
+                .thenReturn(Optional.ofNullable(blockRelationship1));
+
+        responseEntity = emailService.subscribeTo(subBlockRequest);
+        assertSame("This email has been blocked !!", responseEntity.getBody().get("Error"));
+    }
+    @Test
+    public void testSubscribedEmail() {
+        subBlockRequest = new SubscribeAndBlockRequest(emailTest1.getEmail(), emailTest2.getEmail());
+        when(emailRepository.findByEmail(emailTest1.getEmail())).thenReturn(Optional.ofNullable(emailTest1));
+        when(emailRepository.findByEmail(emailTest2.getEmail())).thenReturn(Optional.ofNullable(emailTest2));
+        when(relationshipRepository.findByEmailIdAndFriendId(emailTest1.getEmailId(), emailTest2.getEmailId()))
+                .thenReturn(Optional.ofNullable(subscribeRelationship1));
+
+        responseEntity = emailService.subscribeTo(subBlockRequest);
+        assertSame("Already subscribed to this target email !!", responseEntity.getBody().get("Error"));
+    }
+    @Test
+    public void testSubscribeFriendsEmail() {
+        subBlockRequest = new SubscribeAndBlockRequest(emailTest1.getEmail(), emailTest2.getEmail());
+        when(emailRepository.findByEmail(emailTest1.getEmail())).thenReturn(Optional.ofNullable(emailTest1));
+        when(emailRepository.findByEmail(emailTest2.getEmail())).thenReturn(Optional.ofNullable(emailTest2));
+        when(relationshipRepository.findByEmailIdAndFriendId(emailTest1.getEmailId(), emailTest2.getEmailId()))
+                .thenReturn(Optional.ofNullable(friendRelationship1));
+
+        responseEntity = emailService.subscribeTo(subBlockRequest);
+        assertSame("Already being friend of this target ,  !!", responseEntity.getBody().get("Error"));
+    }
+
+    @Test
     public void testBlockEmailSuccess() {
         subBlockRequest = new SubscribeAndBlockRequest(emailTest5.getEmail(), emailTest4.getEmail());
 
@@ -187,6 +351,46 @@ public class EmailServiceImpTest {
         responseEntity = emailService.blockEmail(subBlockRequest);
         assertSame("true", responseEntity.getBody().get("success"));
     }
+    @Test
+    public void testBlockInvalidRequest() {
+        responseEntity = emailService.blockEmail(null);
+        assertSame("Invalid request", responseEntity.getBody().get("Error"));
+    }
+
+    @Test
+    public void testBlockInvalidEmail() {
+        subBlockRequest = new SubscribeAndBlockRequest("", "emailTest5.getEmail()");
+        responseEntity = emailService.blockEmail(subBlockRequest);
+        assertSame("Invalid requester or target email", responseEntity.getBody().get("Error"));
+    }
+
+    @Test
+    public void testBlockSameEmail() {
+        subBlockRequest = new SubscribeAndBlockRequest("qw@gmail.com", "qw@gmail.com");
+        responseEntity = emailService.blockEmail(subBlockRequest);
+        assertSame("Same email error", responseEntity.getBody().get("Error"));
+    }
+    @Test
+    public void testBlockNotExistEmail() {
+        subBlockRequest = new SubscribeAndBlockRequest(emailTest1.getEmail(), emailTest2.getEmail());
+        when(emailRepository.findByEmail(emailTest1.getEmail())).thenReturn(Optional.empty());
+        when(emailRepository.findByEmail(emailTest2.getEmail())).thenReturn(Optional.empty());
+
+        responseEntity = emailService.blockEmail(subBlockRequest);
+        assertSame("Requester or target email not existed", responseEntity.getBody().get("Error"));
+    }
+    @Test
+    public void testBlockBlockedEmail() {
+        subBlockRequest = new SubscribeAndBlockRequest(emailTest1.getEmail(), emailTest2.getEmail());
+        when(emailRepository.findByEmail(emailTest1.getEmail())).thenReturn(Optional.ofNullable(emailTest1));
+        when(emailRepository.findByEmail(emailTest2.getEmail())).thenReturn(Optional.ofNullable(emailTest2));
+        when(relationshipRepository.findByEmailIdAndFriendId(emailTest1.getEmailId(), emailTest2.getEmailId()))
+                .thenReturn(Optional.ofNullable(blockRelationship1));
+
+        responseEntity = emailService.blockEmail(subBlockRequest);
+        assertSame("This email has already being blocked !!", responseEntity.getBody().get("Error"));
+    }
+
 
     @Test
     public void testRetrieveEmailSuccess() {
@@ -205,6 +409,30 @@ public class EmailServiceImpTest {
         assertTrue(emails.contains(listEmail.get(0)));
         assertTrue(emails.contains(listEmail.get(1)));
         assertTrue(emails.contains(listEmail.get(2)));
-
     }
+    @Test
+    public void testRetrieveInvalidRequest() {
+        responseEntity = emailService.retrieveEmails(null);
+        assertSame("Invalid request", responseEntity.getBody().get("Error"));
+    }
+
+    @Test
+    public void testRetrieveInvalidEmail() {
+        retrieveRequest = new RetrieveRequest("INVALID", "hello nobody");
+        responseEntity = emailService.retrieveEmails(retrieveRequest);
+        assertSame("Invalid sender email", responseEntity.getBody().get("Error"));
+    }
+
+    @Test
+    public void testRetrieveEmptyEmail() {
+        retrieveRequest = new RetrieveRequest(emailTest1.getEmail(), "Hello ");
+        listEmail = Arrays.asList(emailTest2.getEmail(), emailTest3.getEmail(), emailTest5.getEmail());
+
+        when(emailRepository.findByEmail(emailTest1.getEmail())).thenReturn(Optional.of(emailTest1));
+        when(relationshipRepository.findByEmailId(emailTest1.getEmailId())).thenReturn(Collections.emptyList());
+
+        responseEntity = emailService.retrieveEmails(retrieveRequest);
+        assertSame("No recipients found for the given email ", responseEntity.getBody().get("Error"));
+    }
+
 }
