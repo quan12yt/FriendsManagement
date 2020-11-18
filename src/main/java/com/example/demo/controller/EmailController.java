@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
-
 
 @RestController
 @RequestMapping("/emails")
@@ -47,7 +45,7 @@ public class EmailController {
         }
         List<String> listEmails = emailService.getCommonFriends(friendRequest);
         return new ResponseEntity<>(new GetFriendsAndCommonResponse
-                ("true",listEmails,listEmails.size()), HttpStatus.OK);
+                ("true", listEmails, listEmails.size()), HttpStatus.OK);
     }
 
     //get list friends of an email
@@ -62,7 +60,7 @@ public class EmailController {
         List<String> listEmails = emailService.getFriendList(emailRequest);
 
         return new ResponseEntity<>(new GetFriendsAndCommonResponse
-                ("true",listEmails,listEmails.size()),HttpStatus.OK);
+                ("true", listEmails, listEmails.size()), HttpStatus.OK);
     }
 
     //subscribe to an email
@@ -73,7 +71,7 @@ public class EmailController {
             throw new InputInvalidException(error);
         }
         return new ResponseEntity<>(new SuccessResponse
-                (emailService.subscribeTo(subscribeRequest).toString()),HttpStatus.CREATED);
+                (emailService.subscribeTo(subscribeRequest).toString()), HttpStatus.CREATED);
     }
 
     //block an email
@@ -95,6 +93,6 @@ public class EmailController {
             throw new InputInvalidException(error);
         }
         return new ResponseEntity<>(new RetrieveEmailResponse
-                ("true",emailService.retrieveEmails(retrieveRequest)), HttpStatus.OK);
+                ("true", emailService.retrieveEmails(retrieveRequest)), HttpStatus.OK);
     }
 }

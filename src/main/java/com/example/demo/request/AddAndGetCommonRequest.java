@@ -11,6 +11,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddAndGetCommonRequest {
-   @NotNull(message = "List email must not be null or empty")
-   private List<String> friends ;
+    @NotNull(message = "List email must not be null or empty")
+    private List<String> friends;
 }

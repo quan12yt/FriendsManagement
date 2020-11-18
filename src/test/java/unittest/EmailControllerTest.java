@@ -1,7 +1,7 @@
 package unittest;
 
 import com.example.demo.FriendManagementApplication;
-import com.example.demo.exception.WrongStatusException;
+import com.example.demo.exception.WrongRequirementException;
 import com.example.demo.request.AddAndGetCommonRequest;
 import com.example.demo.request.EmailRequest;
 import com.example.demo.request.RetrieveRequest;
@@ -140,7 +140,7 @@ public class EmailControllerTest {
         String json = objectMapper.writeValueAsString(emailRequest);
 
         when(emailService.getFriendList(any(EmailRequest.class)))
-                .thenThrow(new WrongStatusException("Email not found in database"));
+                .thenThrow(new WrongRequirementException("Email not found in database"));
 
         mockMvc.perform(post("/emails/friends")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -244,7 +244,7 @@ public class EmailControllerTest {
         //Test with invalid AddFriend request
         addCommonRequest.setFriends(Arrays.asList("hoangtu1@gmail.com", "huynhquang@gmail.com"));
         when(emailService.addFriend(any(AddAndGetCommonRequest.class)))
-                .thenThrow(new WrongStatusException("This email has been blocked !!"));
+                .thenThrow(new WrongRequirementException("This email has been blocked !!"));
 
         String json = objectMapper.writeValueAsString(addCommonRequest);
         mockMvc.perform(post("/emails/add")
@@ -262,7 +262,7 @@ public class EmailControllerTest {
         addCommonRequest.setFriends(Arrays.asList("hoauanh@gmail.com", "huynhquang@gmail.com"));
 
         when(emailService.addFriend(any(AddAndGetCommonRequest.class)))
-                .thenThrow(new WrongStatusException("Two Email have already being friend"));
+                .thenThrow(new WrongRequirementException("Two Email have already being friend"));
 
         String json = objectMapper.writeValueAsString(addCommonRequest);
         mockMvc.perform(post("/emails/add")
@@ -361,7 +361,7 @@ public class EmailControllerTest {
         addCommonRequest.setFriends(Arrays.asList("mous@gmail.com", "famous@gmail.com"));
 
         when(emailService.getCommonFriends(any(AddAndGetCommonRequest.class)))
-                .thenThrow(new WrongStatusException("Email not exist"));
+                .thenThrow(new WrongRequirementException("Email not exist"));
 
         String json = objectMapper.writeValueAsString(addCommonRequest);
         mockMvc.perform(post("/emails/common")
@@ -454,7 +454,7 @@ public class EmailControllerTest {
         subBlockRequest.setTarget("target@gmail.com");
 
         when(emailService.subscribeTo(any(SubscribeAndBlockRequest.class)))
-                .thenThrow(new WrongStatusException("Requester or target email not existed"));
+                .thenThrow(new WrongRequirementException("Requester or target email not existed"));
 
         String json = objectMapper.writeValueAsString(subBlockRequest);
 
@@ -476,7 +476,7 @@ public class EmailControllerTest {
         subBlockRequest.setTarget("huynhquang@gmail.com");
 
         when(emailService.subscribeTo(any(SubscribeAndBlockRequest.class)))
-                .thenThrow(new WrongStatusException("This email has been blocked !!"));
+                .thenThrow(new WrongRequirementException("This email has been blocked !!"));
 
         String json = objectMapper.writeValueAsString(subBlockRequest);
 
@@ -498,7 +498,7 @@ public class EmailControllerTest {
         subBlockRequest.setTarget("huynhquang@gmail.com");
 
         when(emailService.subscribeTo(any(SubscribeAndBlockRequest.class)))
-                .thenThrow(new WrongStatusException("Already being friend of this target ,  !!"));
+                .thenThrow(new WrongRequirementException("Already being friend of this target ,  !!"));
 
         String json = objectMapper.writeValueAsString(subBlockRequest);
 
@@ -520,7 +520,7 @@ public class EmailControllerTest {
         subBlockRequest.setTarget("hoangtu1@gmail.com");
 
         when(emailService.subscribeTo(any(SubscribeAndBlockRequest.class)))
-                .thenThrow(new WrongStatusException("Already subscribed to this target email !!"));
+                .thenThrow(new WrongRequirementException("Already subscribed to this target email !!"));
 
         String json = objectMapper.writeValueAsString(subBlockRequest);
 
@@ -615,7 +615,7 @@ public class EmailControllerTest {
         subBlockRequest.setTarget("target@gmail.com");
 
         when(emailService.blockEmail(any(SubscribeAndBlockRequest.class)))
-                .thenThrow(new WrongStatusException("Requester or target email not existed"));
+                .thenThrow(new WrongRequirementException("Requester or target email not existed"));
 
         String json = objectMapper.writeValueAsString(subBlockRequest);
 
@@ -636,7 +636,7 @@ public class EmailControllerTest {
         subBlockRequest.setTarget("huynhquang@gmail.com");
 
         when(emailService.blockEmail(any(SubscribeAndBlockRequest.class)))
-                .thenThrow(new WrongStatusException("This email has already being blocked !!"));
+                .thenThrow(new WrongRequirementException("This email has already being blocked !!"));
 
         String json = objectMapper.writeValueAsString(subBlockRequest);
 
@@ -694,7 +694,7 @@ public class EmailControllerTest {
         retrieveRequest = new RetrieveRequest("vuiquanghu@gmail.com", "Hello haong@gmail.com");
 
         when(emailService.retrieveEmails(any(RetrieveRequest.class)))
-                .thenThrow(new WrongStatusException("Email not existed"));
+                .thenThrow(new WrongRequirementException("Email not existed"));
 
         String json = objectMapper.writeValueAsString(retrieveRequest);
 
@@ -713,7 +713,7 @@ public class EmailControllerTest {
         retrieveRequest = new RetrieveRequest("alone@gmail.com", "Hello hang@gmail.com");
 
         when(emailService.retrieveEmails(any(RetrieveRequest.class)))
-                .thenThrow(new WrongStatusException("No recipients found for the given email "));
+                .thenThrow(new WrongRequirementException("No recipients found for the given email "));
 
         String json = objectMapper.writeValueAsString(retrieveRequest);
 

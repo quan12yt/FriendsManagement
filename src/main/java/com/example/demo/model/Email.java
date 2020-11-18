@@ -12,6 +12,7 @@ import java.util.Set;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Email {
 
     @Id
@@ -27,9 +28,4 @@ public class Email {
     @JsonIgnoreProperties("emailOne")
     private Set<Email> friends;
 
-
-    public Email(Long emailId, String email) {
-        this.emailId = emailId;
-        this.email = email;
-    }
 }

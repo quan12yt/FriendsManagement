@@ -1,5 +1,6 @@
 package com.example.demo.utils;
 
+import com.example.demo.enums.FriendStatus;
 import com.example.demo.model.Email;
 import com.example.demo.repository.EmailRepository;
 import com.example.demo.repository.FriendRelationshipRepository;

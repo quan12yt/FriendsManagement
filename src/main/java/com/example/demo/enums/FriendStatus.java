@@ -1,4 +1,4 @@
-package com.example.demo.utils;
+package com.example.demo.enums;
 
 public enum FriendStatus {
         FRIEND, SUBSCRIBE, BLOCK;
