@@ -1,24 +1,24 @@
 package com.example.demo.service;
 
-import com.example.demo.payload.AddAndGetCommonRequest;
-import com.example.demo.payload.EmailRequest;
-import com.example.demo.payload.RetrieveRequest;
-import com.example.demo.payload.SubscribeAndBlockRequest;
-import org.springframework.http.ResponseEntity;
+import com.example.demo.request.AddAndGetCommonRequest;
+import com.example.demo.request.EmailRequest;
+import com.example.demo.request.RetrieveRequest;
+import com.example.demo.request.SubscribeAndBlockRequest;
 
-import java.util.Map;
+import java.util.List;
+import java.util.Set;
 
 public interface EmailService {
 
-    ResponseEntity<Map<String, Object>> getFriendList(EmailRequest emailRequest);
+    List<String> getFriendList(EmailRequest emailRequest);
 
-    ResponseEntity<Map<String, Object>> addFriend(AddAndGetCommonRequest friendRequest);
+    Boolean addFriend(AddAndGetCommonRequest friendRequest);
 
-    ResponseEntity<Map<String, Object>> getCommonFriends(AddAndGetCommonRequest friendRequest);
+    List<String> getCommonFriends(AddAndGetCommonRequest friendRequest);
 
-    ResponseEntity<Map<String, Object>> subscribeTo(SubscribeAndBlockRequest subscribeRequest);
+    Boolean subscribeTo(SubscribeAndBlockRequest subscribeRequest);
 
-    ResponseEntity<Map<String, Object>> blockEmail(SubscribeAndBlockRequest subscribeRequest);
+    Boolean blockEmail(SubscribeAndBlockRequest subscribeRequest);
 
-    ResponseEntity<Map<String, Object>> retrieveEmails(RetrieveRequest retrieveRequest);
+    Set<String> retrieveEmails(RetrieveRequest retrieveRequest);
 }

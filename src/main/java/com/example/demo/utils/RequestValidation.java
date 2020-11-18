@@ -1,7 +1,8 @@
 package com.example.demo.utils;
 
-import com.example.demo.payload.AddAndGetCommonRequest;
-import com.example.demo.payload.SubscribeAndBlockRequest;
+import com.example.demo.request.AddAndGetCommonRequest;
+import com.example.demo.request.RetrieveRequest;
+import com.example.demo.request.SubscribeAndBlockRequest;
 
 public class RequestValidation {
 
@@ -32,6 +33,15 @@ public class RequestValidation {
         }
         if (request.getRequester().equals(request.getTarget())) {
             return "Same email error";
+        }
+        return "";
+    }
+    public static String checkRetrieveRequest(RetrieveRequest request) {
+        if (request == null || request.getSender() == null || request.getText() == null) {
+            return "Invalid request";
+        }
+        if (!EmailValidation.isEmail(request.getSender())) {
+            return "Invalid sender email";
         }
         return "";
     }
