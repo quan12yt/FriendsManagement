@@ -59,7 +59,7 @@ Return json that contains list emails and number of emails
                       "description": "uri=/emails/add"
                   }` <br /><br />
                   OR<br /><br />
-             **Code:** 400 BAD REQUEST <br />
+             **Code:** `400 BAD REQUEST` <br />
              **Content:** `{
                 "statusCode": 400,
                 "message": "This email has been blocked !!",
@@ -67,7 +67,7 @@ Return json that contains list emails and number of emails
                 "description": "uri=/emails/add"
             }` <br /><br />
             OR<br /><br />
-             **Code:** 400 BAD REQUEST <br />
+             **Code:** `400 BAD REQUEST` <br />
              **Content:** `{
                 "statusCode": 400,
                 "message": "Two Email have already being friend",
@@ -93,7 +93,7 @@ Return json that contains list emails and number of emails
       "email": "example@gmail.com"
   }`
 * **Success Response**
-   * **Code:** 200 <br />
+   * **Code:** `200 OK` <br />
    **Content:**
   `{
     "success": "true",
@@ -104,14 +104,14 @@ Return json that contains list emails and number of emails
     "count": 2
    }`<br /> OR <br />
    
-   * **Code:** 204 NOT FOUND <br />
+   * **Code:** `204 NOT FOUND` <br />
    **Content:**
   `{
     1
    }`
 * **Error Response:**
    * **Request Error:** <br />
-             **Code:** 400 BAD REQUEST <br />
+             **Code:** `400 BAD REQUEST` <br />
              **Content:** 
              `{
                 "error": [
@@ -122,7 +122,7 @@ Return json that contains list emails and number of emails
                }`<br /><br />
                OR 
                <br /> <br />
-             **Code:** 400 BAD REQUEST <br />
+             **Code:** `400 BAD REQUEST` <br />
              **Content:** `{
              "statusCode": 400,
              "message": "Invalid email",
@@ -131,7 +131,7 @@ Return json that contains list emails and number of emails
             }` <br />
    --------
     * **Data Error:** <br />
-             **Code:** 404 NOT FOUND <br />
+             **Code:** `404 NOT FOUND` <br />
                    **Content:** `{
                       "statusCode": 404,
                       "message": "Email not found in database",
@@ -157,7 +157,7 @@ Return json that contains list emails and number of emails
       "email": "example@gmail.com"
   }`
 * **Success Response**
-   * **Code:** 200 OK <br />
+   * **Code:** `200 OK` <br />
    **Content:**
   `{
     "success": "true",
@@ -169,7 +169,7 @@ Return json that contains list emails and number of emails
    }`
    `<br /> OR <br />
    
-   * **Code:** 204 NOT FOUND <br />
+   * **Code:** `204 NOT FOUND` <br />
    **Content:**
   `{
     1
@@ -177,7 +177,7 @@ Return json that contains list emails and number of emails
    
 * **Error Response:**
    * **Request Error:** <br />
-             **Code:** 400 BAD REQUEST <br /><br />
+             **Code:** `400 BAD REQUEST` <br /><br />
              **Content:** 
              `{
                 "error": [
@@ -187,7 +187,7 @@ Return json that contains list emails and number of emails
                 "status": 400
             }`<br /><br />
                OR<br /><br />
-             **Code:** 400 BAD REQUEST <br />
+             **Code:** `400 BAD REQUEST` <br />
              **Content:** `{
                 "statusCode": 400,
                 "message": "Must contains 2 emails",
@@ -195,7 +195,7 @@ Return json that contains list emails and number of emails
                 "description": "uri=/emails/add"
             }` <br /><br />
             OR<br /><br />
-             **Code:** 400 BAD REQUEST <br />
+             **Code:** `400 BAD REQUEST` <br />
              **Content:** `{
                 "statusCode": 400,
                 "message": "Invalid email",
@@ -204,7 +204,7 @@ Return json that contains list emails and number of emails
             }` <br /><br />
   -------
     * **Data Error:** <br />
-             **Code:** 404 NOT FOUND <br />
+             **Code:** `404 NOT FOUND` <br />
                    **Content:** `{
                       "statusCode": 404,
                       "message": "Email not exist",
