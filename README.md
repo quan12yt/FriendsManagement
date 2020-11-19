@@ -50,6 +50,8 @@ Return json that contains list emails and number of emails
                       "timestamp": "2020-11-19T03:40:50.341+00:00",
                       "description": "uri=/emails/friends"
                   }` <br />
+-------------------------------------------------------------
+                  
 **Show list friends of an email**
 ----
 Return json that contains list emails and number of emails 
