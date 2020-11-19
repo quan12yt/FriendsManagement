@@ -30,16 +30,16 @@ Return json that contains list emails and number of emails
     "count": 4
    }`
 * **Error Response:**
-   * **Request Error** 
+   * **Request Error:** <br />
            * **Code:** 400 BAD REQUEST <br />
              **Content:** 
              `{
-             "error": [
-                 "Email mustn't be empty or null"
-             ],
-             "timestamp": "2020-11-19T03:25:33.534+00:00",
-             "status": 400
-               }`
+                "error": [
+                    "Email mustn't be empty or null"
+                ],
+                "timestamp": "2020-11-19T03:25:33.534+00:00",
+                "status": 400
+               }`<br />
            OR
 
            * **Code:** 400 BAD REQUEST <br />
