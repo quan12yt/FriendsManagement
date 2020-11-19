@@ -24,7 +24,7 @@ Return json that contains list emails and number of emails
    }`
 * **Error Response:**
    * **Request Error:** <br />
-             **Code:** 400 BAD REQUEST <br />
+             **Code:** 400 BAD REQUEST <br /><br />
              **Content:** 
              `{
                 "error": [
@@ -32,15 +32,15 @@ Return json that contains list emails and number of emails
                 ],
                 "timestamp": "2020-11-19T03:52:02.649+00:00",
                 "status": 400
-            }`<br />
-               OR<br />
+            }`<br /><br />
+               OR<br /><br />
              **Code:** 400 BAD REQUEST <br />
              **Content:** `{
                 "statusCode": 400,
                 "message": "Must contains 2 emails",
                 "timestamp": "2020-11-19T03:53:23.759+00:00",
                 "description": "uri=/emails/add"
-            }` <br />
+            }` <br /><br />
             
     * **Data Error:** <br />
              **Code:** 404 NOT FOUND <br />
@@ -96,8 +96,8 @@ Return json that contains list emails and number of emails
                 ],
                 "timestamp": "2020-11-19T03:25:33.534+00:00",
                 "status": 400
-               }`<br />
-               OR<br />
+               }`<br /><br />
+               OR<br /><br />
              **Code:** 400 BAD REQUEST <br />
              **Content:** `{
              "statusCode": 400,
