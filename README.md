@@ -48,14 +48,7 @@ Return json that contains list emails and number of emails
              "timestamp": "2020-11-19T03:26:18.821+00:00",
              "description": "uri=/emails/friends"
             }` <br />
-            OR<br />
-            * **Code:** 400 BAD REQUEST <br />
-             **Content:** `{
-             "statusCode": 400,
-             "message": "Invalid email",
-             "timestamp": "2020-11-19T03:26:18.821+00:00",
-             "description": "uri=/emails/friends"
-            }`
+            
     * **Data Error:** <br />
            * **Code:** 404 NOT FOUND <br />
                    **Content:** `{
