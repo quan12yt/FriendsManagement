@@ -30,13 +30,13 @@ public class EmailServiceImp implements EmailService {
 
     @Override
     public List<String> getFriendList(EmailRequest emailRequest) {
-        Optional<Email> emailOptional = emailRepository.findByEmail(emailRequest.getEmail());
-        if (emailOptional.isEmpty()) {
+        Optional<Email> requestEmailOptional = emailRepository.findByEmail(emailRequest.getEmail());
+        if (requestEmailOptional.isEmpty()) {
             throw new WrongRequirementException("Email not found in database");
         }
-        Email email = emailOptional.get();
+        Email requestEmail = requestEmailOptional.get();
         return relationshipRepository
-                .findByEmailIdAndStatus(email.getEmailId()
+                .findByEmailIdAndStatus(requestEmail.getEmailId()
                         , FriendStatus.FRIEND.name())
                 .stream().map(i -> emailRepository.findById(i.getFriendId()).get().getEmail())
                 .collect(Collectors.toList());
@@ -80,30 +80,30 @@ public class EmailServiceImp implements EmailService {
 
     @Override
     public List<String> getCommonFriends(AddAndGetCommonRequest friendRequest) {
-        Optional<Email> optionalEmail1 = emailRepository.
+        Optional<Email> optionalRequester = emailRepository.
                 findByEmail(friendRequest.getFriends().get(0));
-        Optional<Email> optionalEmail2 = emailRepository
+        Optional<Email> optionalTarget = emailRepository
                 .findByEmail(friendRequest.getFriends().get(1));
-        if (optionalEmail1.isEmpty() || optionalEmail2.isEmpty()) {
+        if (optionalRequester.isEmpty() || optionalTarget.isEmpty()) {
             throw new WrongRequirementException("Email not exist");
         }
-        List<String> friendsOfEmail1 = this.emailUtil.getFriendsOfEmail(optionalEmail1.get());
-        List<String> friendsOfEmail2 = this.emailUtil.getFriendsOfEmail(optionalEmail2.get());
+        List<String> friendsOfEmail1 = this.emailUtil.getFriendsOfEmail(optionalRequester.get());
+        List<String> friendsOfEmail2 = this.emailUtil.getFriendsOfEmail(optionalTarget.get());
         friendsOfEmail1.retainAll(friendsOfEmail2);
-        return friendsOfEmail2;
+        return friendsOfEmail1;
     }
 
     @Override
     public Boolean subscribeTo(SubscribeAndBlockRequest subscribeRequest) {
-        Optional<Email> optionalEmail1 = emailRepository.
+        Optional<Email> optionalRequester = emailRepository.
                 findByEmail(subscribeRequest.getRequester());
-        Optional<Email> optionalEmail2 = emailRepository
+        Optional<Email> optionalTarget = emailRepository
                 .findByEmail(subscribeRequest.getTarget());
-        if (optionalEmail1.isEmpty() || optionalEmail2.isEmpty()) {
+        if (optionalRequester.isEmpty() || optionalTarget.isEmpty()) {
             throw new WrongRequirementException("Requester or target email not existed");
         }
-        Email requestEmail = optionalEmail1.get();
-        Email targetEmail = optionalEmail2.get();
+        Email requestEmail = optionalRequester.get();
+        Email targetEmail = optionalTarget.get();
         Optional<FriendRelationship> friendRelationship = relationshipRepository
                 .findByEmailIdAndFriendId(requestEmail.getEmailId(), targetEmail.getEmailId());
         if (friendRelationship.isPresent()) {
@@ -126,15 +126,15 @@ public class EmailServiceImp implements EmailService {
 
     @Override
     public Boolean blockEmail(SubscribeAndBlockRequest subscribeRequest) {
-        Optional<Email> optionalEmail1 = emailRepository.
+        Optional<Email> optionalRequester = emailRepository.
                 findByEmail(subscribeRequest.getRequester());
-        Optional<Email> optionalEmail2 = emailRepository
+        Optional<Email> optionalTarget = emailRepository
                 .findByEmail(subscribeRequest.getTarget());
-        if (optionalEmail1.isEmpty() || optionalEmail2.isEmpty()) {
+        if (optionalRequester.isEmpty() || optionalTarget.isEmpty()) {
             throw new WrongRequirementException("Requester or target email not existed");
         }
-        Email requestEmail = optionalEmail1.get();
-        Email targetEmail = optionalEmail2.get();
+        Email requestEmail = optionalRequester.get();
+        Email targetEmail = optionalTarget.get();
         Optional<FriendRelationship> friendRelationship = relationshipRepository
                 .findByEmailIdAndFriendId(requestEmail.getEmailId(), targetEmail.getEmailId());
         if (friendRelationship.isPresent()) {

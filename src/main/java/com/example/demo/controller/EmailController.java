@@ -44,6 +44,9 @@ public class EmailController {
             throw new InputInvalidException(error);
         }
         List<String> listEmails = emailService.getCommonFriends(friendRequest);
+        if(listEmails.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
         return new ResponseEntity<>(new GetFriendsAndCommonResponse
                 ("true", listEmails, listEmails.size()), HttpStatus.OK);
     }
@@ -58,7 +61,9 @@ public class EmailController {
             throw new InputInvalidException("Invalid email");
         }
         List<String> listEmails = emailService.getFriendList(emailRequest);
-
+        if(listEmails.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
         return new ResponseEntity<>(new GetFriendsAndCommonResponse
                 ("true", listEmails, listEmails.size()), HttpStatus.OK);
     }

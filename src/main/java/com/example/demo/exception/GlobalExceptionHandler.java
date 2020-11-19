@@ -14,22 +14,18 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InputInvalidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorMessage inputInvalidException(InputInvalidException ex, WebRequest webRequest) {
-        ErrorMessage message = new ErrorMessage();
-        message.setTimestamp(new Date());
-        message.setStatusCode(HttpStatus.BAD_REQUEST.value());
-        message.setMessage(ex.getMessage());
-        message.setDescription(webRequest.getDescription(false));
-        return message;
+        return new ErrorMessage(HttpStatus.BAD_REQUEST.value()
+                , ex.getMessage()
+                , new Date()
+                , webRequest.getDescription(false));
     }
 
     @ExceptionHandler(WrongRequirementException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorMessage wrongStatus(WrongRequirementException ex, WebRequest webRequest) {
-        ErrorMessage message = new ErrorMessage();
-        message.setTimestamp(new Date());
-        message.setStatusCode(HttpStatus.BAD_REQUEST.value());
-        message.setMessage(ex.getMessage());
-        message.setDescription(webRequest.getDescription(false));
-        return message;
+        return new ErrorMessage(HttpStatus.BAD_REQUEST.value()
+                , ex.getMessage()
+                , new Date()
+                , webRequest.getDescription(false));
     }
 }

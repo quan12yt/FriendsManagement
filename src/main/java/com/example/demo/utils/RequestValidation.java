@@ -36,6 +36,7 @@ public class RequestValidation {
         }
         return "";
     }
+
     public static String checkRetrieveRequest(RetrieveRequest request) {
         if (request == null || request.getSender() == null || request.getText() == null) {
             return "Invalid request";
