@@ -5,7 +5,7 @@
 Return json that contains list emails and number of emails 
 * **URL**
 
-  /emails/friends
+   `/emails/friends`
   
 * **METHOD**
 
