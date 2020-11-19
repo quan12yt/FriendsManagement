@@ -40,8 +40,6 @@ Return json that contains list emails and number of emails
                 "timestamp": "2020-11-19T03:25:33.534+00:00",
                 "status": 400
                }`<br />
-           OR
-
            * **Code:** 400 BAD REQUEST <br />
              **Content:** `{
              "statusCode": 400,
@@ -49,4 +47,19 @@ Return json that contains list emails and number of emails
              "timestamp": "2020-11-19T03:26:18.821+00:00",
              "description": "uri=/emails/friends"
             }`
-    
+            * **Code:** 400 BAD REQUEST <br />
+             **Content:** `{
+             "statusCode": 400,
+             "message": "Invalid email",
+             "timestamp": "2020-11-19T03:26:18.821+00:00",
+             "description": "uri=/emails/friends"
+            }`
+    * **Data Error:** <br />
+           * **Code:** 404 NOT FOUND <br />
+                   **Content:** `{
+                      "statusCode": 404,
+                      "message": "Email not found in database",
+                      "timestamp": "2020-11-19T03:40:50.341+00:00",
+                      "description": "uri=/emails/friends"
+                  }`
+
