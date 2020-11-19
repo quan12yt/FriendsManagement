@@ -1,5 +1,55 @@
 # FriendsManagement
 
+**Add friend connection between two emails**
+----
+Return json that contains list emails and number of emails 
+* **URL**
+
+   `/emails/friends`
+  
+* **METHOD**
+
+  `POST`
+  
+* **Request Json**
+
+  `{
+      "email": "example@gmail.com"
+  }`
+* **Success Response**
+   * **Code:** 201 CREATED <br />
+   **Content:**
+  `{
+    "success": "true",
+   }`
+* **Error Response:**
+   * **Request Error:** <br />
+             **Code:** 400 BAD REQUEST <br />
+             **Content:** 
+             `{
+                "error": [
+                    "List email must not be null or empty"
+                ],
+                "timestamp": "2020-11-19T03:52:02.649+00:00",
+                "status": 400
+            }`<br />
+               OR<br />
+             **Code:** 400 BAD REQUEST <br />
+             **Content:** `{
+                "statusCode": 400,
+                "message": "Must contains 2 emails",
+                "timestamp": "2020-11-19T03:53:23.759+00:00",
+                "description": "uri=/emails/add"
+            }` <br />
+            
+    * **Data Error:** <br />
+             **Code:** 404 NOT FOUND <br />
+                   **Content:** `{
+                      "statusCode": 404,
+                      "message": "Email not found in database",
+                      "timestamp": "2020-11-19T03:40:50.341+00:00",
+                      "description": "uri=/emails/friends"
+                  }` <br />
 **Show list friends of an email**
 ----
 Return json that contains list emails and number of emails 
