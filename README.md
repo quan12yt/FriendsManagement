@@ -30,7 +30,7 @@ Return json that contains list emails and number of emails
     "count": 4
    }`
 * **Error Response:**
-   * **Request Error**
+   * **Request Error** 
            * **Code:** 400 BAD REQUEST <br />
              **Content:** 
              `{
