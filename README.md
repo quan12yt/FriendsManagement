@@ -16,4 +16,16 @@ Return json that contains list emails and number of emails
   `{
       "email": "example@gmail.com"
   }`
+* **Success Response**
+
+  `{
+    "success": "true",
+    "friends": [
+        "hoauanh@gmail.com",
+        "huynhquang@gmail.com",
+        "vuiquanghau@gmail.com",
+        "alone@gmail.com"
+    ],
+    "count": 4
+}`
     
