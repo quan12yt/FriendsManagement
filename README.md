@@ -17,7 +17,8 @@ Return json that contains list emails and number of emails
       "email": "example@gmail.com"
   }`
 * **Success Response**
-
+   * **Code:** 200 <br />
+   **Content:**
   `{
     "success": "true",
     "friends": [
