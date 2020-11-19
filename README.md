@@ -41,7 +41,7 @@ Return json that contains list emails and number of emails
                 "timestamp": "2020-11-19T03:53:23.759+00:00",
                 "description": "uri=/emails/add"
             }` <br /><br />
-            
+  -------
     * **Data Error:** <br />
              **Code:** 404 NOT FOUND <br />
                    **Content:** `{
@@ -97,7 +97,8 @@ Return json that contains list emails and number of emails
                 "timestamp": "2020-11-19T03:25:33.534+00:00",
                 "status": 400
                }`<br /><br />
-               OR<br /><br />
+               OR 
+               <br /> <br />
              **Code:** 400 BAD REQUEST <br />
              **Content:** `{
              "statusCode": 400,
@@ -105,7 +106,7 @@ Return json that contains list emails and number of emails
              "timestamp": "2020-11-19T03:26:18.821+00:00",
              "description": "uri=/emails/friends"
             }` <br />
-            
+   --------
     * **Data Error:** <br />
              **Code:** 404 NOT FOUND <br />
                    **Content:** `{
