@@ -17,14 +17,14 @@ Return json that contains list emails and number of emails
       "email": "example@gmail.com"
   }`
 * **Success Response**
-   * **Code:** 201 CREATED <br />
+   * **Code:** `201 CREATED` <br />
    **Content:**
   `{
     "success": "true",
    }`
 * **Error Response:**
    * **Request Error:** <br />
-             **Code:** 400 BAD REQUEST <br /><br />
+             **Code:** `400 BAD REQUEST` <br /><br />
              **Content:** 
              `{
                 "error": [
@@ -34,7 +34,7 @@ Return json that contains list emails and number of emails
                 "status": 400
             }`<br /><br />
                OR<br /><br />
-             **Code:** 400 BAD REQUEST <br />
+             **Code:** `400 BAD REQUEST` <br />
              **Content:** `{
                 "statusCode": 400,
                 "message": "Must contains 2 emails",
@@ -42,7 +42,7 @@ Return json that contains list emails and number of emails
                 "description": "uri=/emails/add"
             }` <br /><br />
             OR<br /><br />
-             **Code:** 400 BAD REQUEST <br />
+             **Code:** `400 BAD REQUEST` <br />
              **Content:** `{
                 "statusCode": 400,
                 "message": "Invalid email",
@@ -51,7 +51,7 @@ Return json that contains list emails and number of emails
             }` <br /><br />
   -------
     * **Data Error:** <br />
-             **Code:** 404 NOT FOUND <br />
+             **Code:** `404 NOT FOUND` <br />
                    **Content:** `{
                       "statusCode": 404,
                       "message": "Both emails have to be in database",
