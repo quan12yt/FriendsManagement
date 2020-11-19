@@ -41,15 +41,39 @@ Return json that contains list emails and number of emails
                 "timestamp": "2020-11-19T03:53:23.759+00:00",
                 "description": "uri=/emails/add"
             }` <br /><br />
+            OR<br /><br />
+             **Code:** 400 BAD REQUEST <br />
+             **Content:** `{
+                "statusCode": 400,
+                "message": "Invalid email",
+                "timestamp": "2020-11-19T04:16:27.903+00:00",
+                "description": "uri=/emails/add"
+            }` <br /><br />
   -------
     * **Data Error:** <br />
              **Code:** 404 NOT FOUND <br />
                    **Content:** `{
                       "statusCode": 404,
-                      "message": "Email not found in database",
-                      "timestamp": "2020-11-19T03:40:50.341+00:00",
-                      "description": "uri=/emails/friends"
-                  }` <br />
+                      "message": "Both emails have to be in database",
+                      "timestamp": "2020-11-19T04:17:26.364+00:00",
+                      "description": "uri=/emails/add"
+                  }` <br /><br />
+                  OR<br /><br />
+             **Code:** 400 BAD REQUEST <br />
+             **Content:** `{
+                "statusCode": 400,
+                "message": "This email has been blocked !!",
+                "timestamp": "2020-11-19T04:16:27.903+00:00",
+                "description": "uri=/emails/add"
+            }` <br /><br />
+            OR<br /><br />
+             **Code:** 400 BAD REQUEST <br />
+             **Content:** `{
+                "statusCode": 400,
+                "message": "Two Email have already being friend",
+                "timestamp": "2020-11-19T04:16:27.903+00:00",
+                "description": "uri=/emails/add"
+            }` <br /><br />
 -------------------------------------------------------------
                   
 **Show list friends of an email**
