@@ -13,9 +13,13 @@ Return json that contains list emails and number of emails
   
 * **Request Json**
 
-  `{
-      "email": "example@gmail.com"
-  }`
+  ` {
+    "friends":
+    [
+     "alne@gmail.com",       
+     "anhthus@gmail.com"     
+    ] 
+} `
 * **Success Response**
    * **Code:** `201 CREATED` <br />
    **Content:**
@@ -153,9 +157,13 @@ Return json that contains list emails and number of emails
   
 * **Request Json**
 
-  `{
-      "email": "example@gmail.com"
-  }`
+  ` {
+    "friends":
+    [
+     "hoauanh@gmail.com",       
+     "anhthus@gmail.com"     
+    ] 
+}`
 * **Success Response**
    * **Code:** `200 OK` <br />
    **Content:**
