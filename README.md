@@ -40,7 +40,7 @@ Return json that contains list emails and number of emails
                 "timestamp": "2020-11-19T03:25:33.534+00:00",
                 "status": 400
                }`<br />
-               OR
+               OR<br />
            * **Code:** 400 BAD REQUEST <br />
              **Content:** `{
              "statusCode": 400,
@@ -48,7 +48,7 @@ Return json that contains list emails and number of emails
              "timestamp": "2020-11-19T03:26:18.821+00:00",
              "description": "uri=/emails/friends"
             }` <br />
-            OR
+            OR<br />
             * **Code:** 400 BAD REQUEST <br />
              **Content:** `{
              "statusCode": 400,
