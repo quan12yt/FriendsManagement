@@ -1,6 +1,7 @@
 package unittest;
 
 import com.example.demo.FriendManagementApplication;
+import com.example.demo.exception.EmailNotFoundException;
 import com.example.demo.exception.WrongRequirementException;
 import com.example.demo.model.Email;
 import com.example.demo.model.FriendRelationship;
@@ -115,7 +116,7 @@ public class EmailServiceImpTest {
     public void testGetFriendsNotExistEmail() {
         emailRequest = new EmailRequest(emailTest1.getEmail());
         when(emailRepository.findByEmail(emailTest1.getEmail())).thenReturn(Optional.empty());
-        Throwable ex = assertThrows(WrongRequirementException.class, () -> emailService.getFriendList(emailRequest));
+        Throwable ex = assertThrows(EmailNotFoundException.class, () -> emailService.getFriendList(emailRequest));
         assertSame("Email not found in database", ex.getMessage());
     }
 
@@ -138,7 +139,7 @@ public class EmailServiceImpTest {
     @Test
     public void testAddFriendNotExistEmail() {
         addCommonRequest = new AddAndGetCommonRequest(Arrays.asList("q@gmail.com", "qw@gmail.com"));
-        Throwable ex = assertThrows(WrongRequirementException.class, () -> emailService.addFriend(addCommonRequest));
+        Throwable ex = assertThrows(EmailNotFoundException.class, () -> emailService.addFriend(addCommonRequest));
         assertSame("Both emails have to be in database", ex.getMessage());
     }
 
@@ -198,7 +199,7 @@ public class EmailServiceImpTest {
     @Test
     public void testGetCommonNotExistEmail() {
         addCommonRequest = new AddAndGetCommonRequest(Arrays.asList("q@gmail.com", "qw@gmail.com"));
-        Throwable ex = assertThrows(WrongRequirementException.class, () -> emailService.getCommonFriends(addCommonRequest));
+        Throwable ex = assertThrows(EmailNotFoundException.class, () -> emailService.getCommonFriends(addCommonRequest));
         assertSame("Email not exist", ex.getMessage());
     }
 
@@ -221,7 +222,7 @@ public class EmailServiceImpTest {
         when(emailRepository.findByEmail(emailTest1.getEmail())).thenReturn(Optional.empty());
         when(emailRepository.findByEmail(emailTest2.getEmail())).thenReturn(Optional.empty());
 
-        Throwable ex = assertThrows(WrongRequirementException.class, () -> emailService.subscribeTo(subBlockRequest));
+        Throwable ex = assertThrows(EmailNotFoundException.class, () -> emailService.subscribeTo(subBlockRequest));
         assertSame("Requester or target email not existed", ex.getMessage());
     }
 
@@ -280,7 +281,7 @@ public class EmailServiceImpTest {
         when(emailRepository.findByEmail(emailTest1.getEmail())).thenReturn(Optional.empty());
         when(emailRepository.findByEmail(emailTest2.getEmail())).thenReturn(Optional.empty());
 
-        Throwable ex = assertThrows(WrongRequirementException.class, () -> emailService.blockEmail(subBlockRequest));
+        Throwable ex = assertThrows(EmailNotFoundException.class, () -> emailService.blockEmail(subBlockRequest));
         assertSame("Requester or target email not existed", ex.getMessage());
     }
 
@@ -314,17 +315,14 @@ public class EmailServiceImpTest {
         assertTrue(setEmails.contains(listEmail.get(2)));
     }
 
-
     @Test
-    public void testRetrieveEmptyEmail() {
-        retrieveRequest = new RetrieveRequest(emailTest1.getEmail(), "Hello ");
+    public void testRetrieveEmailNotExist() {
+        retrieveRequest = new RetrieveRequest(emailTest1.getEmail(), "Hello " + emailTest5.getEmail());
         listEmail = Arrays.asList(emailTest2.getEmail(), emailTest3.getEmail(), emailTest5.getEmail());
 
-        when(emailRepository.findByEmail(emailTest1.getEmail())).thenReturn(Optional.of(emailTest1));
-        when(relationshipRepository.findByEmailId(emailTest1.getEmailId())).thenReturn(Collections.emptyList());
-
-        Throwable ex = assertThrows(WrongRequirementException.class, () -> emailService.retrieveEmails(retrieveRequest));
-        assertSame("No recipients found for the given email ", ex.getMessage());
+        when(emailRepository.findByEmail(emailTest1.getEmail())).thenReturn(Optional.empty());
+        Throwable ex = assertThrows(EmailNotFoundException.class, () -> emailService.retrieveEmails(retrieveRequest));
+        assertSame("Sender mail not existed", ex.getMessage());
     }
 
 }

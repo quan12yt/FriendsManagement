@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/emails")
@@ -29,7 +30,7 @@ public class EmailController {
     @PostMapping("/add")
     public ResponseEntity<SuccessResponse> addFriend(@Valid @RequestBody AddAndGetCommonRequest friendRequest) {
         String error = RequestValidation.checkAddAndSubscribeRequest(friendRequest);
-        if (!(error == "")) {
+        if (!error.equals("")) {
             throw new InputInvalidException(error);
         }
         return new ResponseEntity<>(new SuccessResponse
@@ -40,11 +41,11 @@ public class EmailController {
     @PostMapping("/common")
     public ResponseEntity<GetFriendsAndCommonResponse> getCommonFriends(@Valid @RequestBody AddAndGetCommonRequest friendRequest) {
         String error = RequestValidation.checkAddAndSubscribeRequest(friendRequest);
-        if (!(error == "")) {
+        if (!error.equals("")) {
             throw new InputInvalidException(error);
         }
         List<String> listEmails = emailService.getCommonFriends(friendRequest);
-        if(listEmails.isEmpty()) {
+        if (listEmails.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return new ResponseEntity<>(new GetFriendsAndCommonResponse
@@ -61,7 +62,7 @@ public class EmailController {
             throw new InputInvalidException("Invalid email");
         }
         List<String> listEmails = emailService.getFriendList(emailRequest);
-        if(listEmails.isEmpty()) {
+        if (listEmails.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return new ResponseEntity<>(new GetFriendsAndCommonResponse
@@ -72,7 +73,7 @@ public class EmailController {
     @PutMapping("/subscribe")
     public ResponseEntity<SuccessResponse> subscribeTo(@Valid @RequestBody SubscribeAndBlockRequest subscribeRequest) {
         String error = RequestValidation.checkSubscribeAndBlockRequest(subscribeRequest);
-        if (!(error == "")) {
+        if (!error.equals("")) {
             throw new InputInvalidException(error);
         }
         return new ResponseEntity<>(new SuccessResponse
@@ -83,7 +84,7 @@ public class EmailController {
     @PutMapping("/block")
     public ResponseEntity<SuccessResponse> blockEmail(@Valid @RequestBody SubscribeAndBlockRequest subscribeRequest) {
         String error = RequestValidation.checkSubscribeAndBlockRequest(subscribeRequest);
-        if (!(error == "")) {
+        if (!error.equals("")) {
             throw new InputInvalidException(error);
         }
         return new ResponseEntity<>(new SuccessResponse
@@ -94,10 +95,14 @@ public class EmailController {
     @PostMapping("/retrieve")
     public ResponseEntity<RetrieveEmailResponse> retrieveEmail(@Valid @RequestBody RetrieveRequest retrieveRequest) {
         String error = RequestValidation.checkRetrieveRequest(retrieveRequest);
-        if (!(error == "")) {
+        if (!error.equals("")) {
             throw new InputInvalidException(error);
         }
+        Set<String> setEmails = emailService.retrieveEmails(retrieveRequest);
+        if (setEmails.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
         return new ResponseEntity<>(new RetrieveEmailResponse
-                ("true", emailService.retrieveEmails(retrieveRequest)), HttpStatus.OK);
+                ("true", setEmails), HttpStatus.OK);
     }
 }

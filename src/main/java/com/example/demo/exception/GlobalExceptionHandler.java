@@ -28,4 +28,13 @@ public class GlobalExceptionHandler {
                 , new Date()
                 , webRequest.getDescription(false));
     }
+
+    @ExceptionHandler(EmailNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorMessage emailNotFound(EmailNotFoundException ex, WebRequest webRequest) {
+        return new ErrorMessage(HttpStatus.NOT_FOUND.value()
+                , ex.getMessage()
+                , new Date()
+                , webRequest.getDescription(false));
+    }
 }

@@ -1,6 +1,7 @@
 package unittest;
 
 import com.example.demo.FriendManagementApplication;
+import com.example.demo.exception.EmailNotFoundException;
 import com.example.demo.exception.WrongRequirementException;
 import com.example.demo.request.AddAndGetCommonRequest;
 import com.example.demo.request.EmailRequest;
@@ -101,6 +102,23 @@ public class EmailControllerTest {
     }
 
     @Test
+    public void getFriendsNoContent() throws Exception {
+        //Test with valid email
+        emailRequest = new EmailRequest("huynhquang@gmail.com");
+        String json = objectMapper.writeValueAsString(emailRequest);
+        listEmail = Collections.emptyList();
+        when(emailService.getFriendList(any(EmailRequest.class))).thenReturn(listEmail);
+
+        mockMvc.perform(post("/emails/friends")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+
+
+    }
+
+    @Test
     public void getFriendsInvalidRequestTest() throws Exception {
         //Test with invalid request
         emailRequest = new EmailRequest("");
@@ -140,13 +158,13 @@ public class EmailControllerTest {
         String json = objectMapper.writeValueAsString(emailRequest);
 
         when(emailService.getFriendList(any(EmailRequest.class)))
-                .thenThrow(new WrongRequirementException("Email not found in database"));
+                .thenThrow(new EmailNotFoundException("Email not found in database"));
 
         mockMvc.perform(post("/emails/friends")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json))
                 .andDo(print())
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isNotFound())
                 .andExpect(jsonPath
                         ("$.message", CoreMatchers.is("Email not found in database")));
 
@@ -297,6 +315,21 @@ public class EmailControllerTest {
     }
 
     @Test
+    public void getCommonFriendsNoContent() throws Exception {
+        //Test with valid input
+        addCommonRequest.setFriends(Arrays.asList("anhthus@gmail.com", "huynhquang@gmail.com"));
+        listEmail = Collections.emptyList();
+        when(emailService.getCommonFriends(any(AddAndGetCommonRequest.class))).thenReturn(listEmail);
+
+        String json = objectMapper.writeValueAsString(addCommonRequest);
+        mockMvc.perform(post("/emails/common")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
     public void getCommonFriendsInvalidInputTest() throws Exception {
         //Test with invalid input
         addCommonRequest.setFriends(null);
@@ -361,14 +394,14 @@ public class EmailControllerTest {
         addCommonRequest.setFriends(Arrays.asList("mous@gmail.com", "famous@gmail.com"));
 
         when(emailService.getCommonFriends(any(AddAndGetCommonRequest.class)))
-                .thenThrow(new WrongRequirementException("Email not exist"));
+                .thenThrow(new EmailNotFoundException("Email not exist"));
 
         String json = objectMapper.writeValueAsString(addCommonRequest);
         mockMvc.perform(post("/emails/common")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json))
                 .andDo(print())
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isNotFound())
                 .andExpect(jsonPath
                         ("$.message", CoreMatchers.is("Email not exist")));
     }
@@ -454,7 +487,7 @@ public class EmailControllerTest {
         subBlockRequest.setTarget("target@gmail.com");
 
         when(emailService.subscribeTo(any(SubscribeAndBlockRequest.class)))
-                .thenThrow(new WrongRequirementException("Requester or target email not existed"));
+                .thenThrow(new EmailNotFoundException("Requester or target email not existed"));
 
         String json = objectMapper.writeValueAsString(subBlockRequest);
 
@@ -462,7 +495,7 @@ public class EmailControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json))
                 .andDo(print())
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isNotFound())
                 .andExpect(jsonPath
                         ("$.message", CoreMatchers
                                 .is("Requester or target email not existed")));
@@ -615,7 +648,7 @@ public class EmailControllerTest {
         subBlockRequest.setTarget("target@gmail.com");
 
         when(emailService.blockEmail(any(SubscribeAndBlockRequest.class)))
-                .thenThrow(new WrongRequirementException("Requester or target email not existed"));
+                .thenThrow(new EmailNotFoundException("Requester or target email not existed"));
 
         String json = objectMapper.writeValueAsString(subBlockRequest);
 
@@ -623,7 +656,7 @@ public class EmailControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json))
                 .andDo(print())
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isNotFound())
                 .andExpect(jsonPath
                         ("$.message", CoreMatchers
                                 .is("Requester or target email not existed")));
@@ -694,7 +727,7 @@ public class EmailControllerTest {
         retrieveRequest = new RetrieveRequest("vuiquanghu@gmail.com", "Hello haong@gmail.com");
 
         when(emailService.retrieveEmails(any(RetrieveRequest.class)))
-                .thenThrow(new WrongRequirementException("Email not existed"));
+                .thenThrow(new EmailNotFoundException("Email not existed"));
 
         String json = objectMapper.writeValueAsString(retrieveRequest);
 
@@ -702,7 +735,7 @@ public class EmailControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json))
                 .andDo(print())
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isNotFound())
                 .andExpect(jsonPath
                         ("$.message", CoreMatchers.is("Email not existed")));
     }
@@ -711,9 +744,9 @@ public class EmailControllerTest {
     public void retrieveNotFoundTest() throws Exception {
         //Test with invalid RetrieveRequest
         retrieveRequest = new RetrieveRequest("alone@gmail.com", "Hello hang@gmail.com");
-
+        setEmails = Collections.emptySet();
         when(emailService.retrieveEmails(any(RetrieveRequest.class)))
-                .thenThrow(new WrongRequirementException("No recipients found for the given email "));
+                .thenReturn(setEmails);
 
         String json = objectMapper.writeValueAsString(retrieveRequest);
 
@@ -721,9 +754,7 @@ public class EmailControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json))
                 .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath
-                        ("$.message", CoreMatchers.is("No recipients found for the given email ")));
+                .andExpect(status().isNoContent());
     }
 
 }
