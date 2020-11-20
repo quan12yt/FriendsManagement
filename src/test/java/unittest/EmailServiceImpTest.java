@@ -12,7 +12,7 @@ import com.example.demo.request.SubscribeAndBlockRequest;
 import com.example.demo.repository.EmailRepository;
 import com.example.demo.repository.FriendRelationshipRepository;
 import com.example.demo.service.serviceimp.EmailServiceImp;
-import com.example.demo.enums.FriendStatus;
+import com.example.demo.enums.FriendStatusEnum;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -76,12 +76,12 @@ public class EmailServiceImpTest {
         emailTest5 = Email.builder().emailId(4L).email("lan@gmail.com").build();
         emailTest6 = Email.builder().emailId(5L).email("khang@gmail.com").build();
 
-        friendRelationship1 = new FriendRelationship(1L, 1L, 2L, FriendStatus.FRIEND.name(), emailTest1, emailTest2);
-        friendRelationship2 = new FriendRelationship(2L, 1L, 3L, FriendStatus.FRIEND.name(), emailTest1, emailTest3);
-        friendRelationship3 = new FriendRelationship(3L, 2L, 1L, FriendStatus.FRIEND.name(), emailTest2, emailTest1);
-        friendRelationship4 = new FriendRelationship(4L, 3L, 1L, FriendStatus.FRIEND.name(), emailTest3, emailTest1);
-        blockRelationship1 = new FriendRelationship(5L, 5L, 4L, FriendStatus.BLOCK.name(), emailTest5, emailTest4);
-        subscribeRelationship1 = new FriendRelationship(6L, 6L, 5L, FriendStatus.SUBSCRIBE.name(), emailTest6, emailTest5);
+        friendRelationship1 = new FriendRelationship(1L, 1L, 2L, FriendStatusEnum.FRIEND.name(), emailTest1, emailTest2);
+        friendRelationship2 = new FriendRelationship(2L, 1L, 3L, FriendStatusEnum.FRIEND.name(), emailTest1, emailTest3);
+        friendRelationship3 = new FriendRelationship(3L, 2L, 1L, FriendStatusEnum.FRIEND.name(), emailTest2, emailTest1);
+        friendRelationship4 = new FriendRelationship(4L, 3L, 1L, FriendStatusEnum.FRIEND.name(), emailTest3, emailTest1);
+        blockRelationship1 = new FriendRelationship(5L, 5L, 4L, FriendStatusEnum.BLOCK.name(), emailTest5, emailTest4);
+        subscribeRelationship1 = new FriendRelationship(6L, 6L, 5L, FriendStatusEnum.SUBSCRIBE.name(), emailTest6, emailTest5);
 
         listRelationships = new ArrayList<>();
         listEmail = new ArrayList<>();
@@ -93,7 +93,7 @@ public class EmailServiceImpTest {
         listRelationships = Arrays.asList(friendRelationship1, friendRelationship2);
 
         when(relationshipRepository.findByEmailIdAndStatus
-                (emailTest1.getEmailId(), FriendStatus.FRIEND.name()))
+                (emailTest1.getEmailId(), FriendStatusEnum.FRIEND.name()))
                 .thenReturn(listRelationships);
         when(emailRepository.findById(emailTest2.getEmailId()))
                 .thenReturn(Optional.of(emailTest2));
@@ -182,10 +182,10 @@ public class EmailServiceImpTest {
         when(emailRepository.findByEmail(emailTest3.getEmail()))
                 .thenReturn(Optional.of(emailTest3));
         when(relationshipRepository.findByEmailIdAndStatus
-                (emailTest2.getEmailId(), FriendStatus.FRIEND.name()))
+                (emailTest2.getEmailId(), FriendStatusEnum.FRIEND.name()))
                 .thenReturn(Collections.singletonList(friendRelationship3));
         when(relationshipRepository.findByEmailIdAndStatus
-                (emailTest3.getEmailId(), FriendStatus.FRIEND.name())).
+                (emailTest3.getEmailId(), FriendStatusEnum.FRIEND.name())).
                 thenReturn(Collections.singletonList(friendRelationship4));
         when(emailRepository.findById(emailTest1.getEmailId()))
                 .thenReturn(Optional.of(emailTest1));

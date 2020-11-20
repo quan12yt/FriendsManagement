@@ -1,5 +1,5 @@
 package com.example.demo.enums;
 
-public enum FriendStatus {
+public enum FriendStatusEnum {
         FRIEND, SUBSCRIBE, BLOCK;
 }

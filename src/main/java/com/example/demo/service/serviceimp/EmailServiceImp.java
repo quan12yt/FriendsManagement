@@ -12,7 +12,7 @@ import com.example.demo.repository.EmailRepository;
 import com.example.demo.repository.FriendRelationshipRepository;
 import com.example.demo.service.EmailService;
 import com.example.demo.utils.EmailUtils;
-import com.example.demo.enums.FriendStatus;
+import com.example.demo.enums.FriendStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +38,7 @@ public class EmailServiceImp implements EmailService {
         Email requestEmail = requestEmailOptional.get();
         return relationshipRepository
                 .findByEmailIdAndStatus(requestEmail.getEmailId()
-                        , FriendStatus.FRIEND.name())
+                        , FriendStatusEnum.FRIEND.name())
                 .stream().map(i -> emailRepository.findById(i.getFriendId()).get().getEmail())
                 .collect(Collectors.toList());
     }
@@ -59,18 +59,18 @@ public class EmailServiceImp implements EmailService {
                 .findByEmailIdAndFriendId(email.getEmailId(), friendEmail.getEmailId());
         if (friendRelationship.isPresent()) {
             if (friendRelationship.get().getStatus
-                    ().contains(FriendStatus.BLOCK.name())) {
+                    ().contains(FriendStatusEnum.BLOCK.name())) {
                 throw new WrongRequirementException("This email has been blocked !!");
             }
-            if (friendRelationship.get().getStatus().contains(FriendStatus.FRIEND.name())) {
+            if (friendRelationship.get().getStatus().contains(FriendStatusEnum.FRIEND.name())) {
                 throw new WrongRequirementException("Two Email have already being friend");
             }
         }
         try {
             FriendRelationship relationship = new FriendRelationship
-                    (email.getEmailId(), friendEmail.getEmailId(), FriendStatus.FRIEND.name());
+                    (email.getEmailId(), friendEmail.getEmailId(), FriendStatusEnum.FRIEND.name());
             FriendRelationship inverseRelationship = new FriendRelationship
-                    (friendEmail.getEmailId(), email.getEmailId(), FriendStatus.FRIEND.name());
+                    (friendEmail.getEmailId(), email.getEmailId(), FriendStatusEnum.FRIEND.name());
             relationshipRepository.save(relationship);
             relationshipRepository.save(inverseRelationship);
             return true;
@@ -90,12 +90,12 @@ public class EmailServiceImp implements EmailService {
         }
         List<String> friendsOfRequester = relationshipRepository
                 .findByEmailIdAndStatus
-                        (optionalRequester.get().getEmailId(), String.valueOf(FriendStatus.FRIEND))
+                        (optionalRequester.get().getEmailId(), String.valueOf(FriendStatusEnum.FRIEND))
                 .stream().map(i -> emailRepository.findById(i.getFriendId()).get().getEmail())
                 .collect(Collectors.toList());
         List<String> friendsOfTarget = relationshipRepository
                 .findByEmailIdAndStatus
-                        (optionalTarget.get().getEmailId(), String.valueOf(FriendStatus.FRIEND))
+                        (optionalTarget.get().getEmailId(), String.valueOf(FriendStatusEnum.FRIEND))
                 .stream().map(i -> emailRepository.findById(i.getFriendId()).get().getEmail())
                 .collect(Collectors.toList());
         friendsOfRequester.retainAll(friendsOfTarget);
@@ -116,18 +116,18 @@ public class EmailServiceImp implements EmailService {
         Optional<FriendRelationship> friendRelationship = relationshipRepository
                 .findByEmailIdAndFriendId(requestEmail.getEmailId(), targetEmail.getEmailId());
         if (friendRelationship.isPresent()) {
-            if (friendRelationship.get().getStatus().contains(FriendStatus.BLOCK.name())) {
+            if (friendRelationship.get().getStatus().contains(FriendStatusEnum.BLOCK.name())) {
                 throw new WrongRequirementException("Target email has been blocked !!");
             }
-            if (friendRelationship.get().getStatus().contains(FriendStatus.SUBSCRIBE.name())) {
+            if (friendRelationship.get().getStatus().contains(FriendStatusEnum.SUBSCRIBE.name())) {
                 throw new WrongRequirementException("Already subscribed to this target email !!");
             }
-            if (friendRelationship.get().getStatus().contains(FriendStatus.FRIEND.name())) {
+            if (friendRelationship.get().getStatus().contains(FriendStatusEnum.FRIEND.name())) {
                 throw new WrongRequirementException("Already being friend of this target ,no need to subscribe  !!");
             }
         }
         FriendRelationship relationship = new FriendRelationship
-                (requestEmail.getEmailId(), targetEmail.getEmailId(), FriendStatus.SUBSCRIBE.name());
+                (requestEmail.getEmailId(), targetEmail.getEmailId(), FriendStatusEnum.SUBSCRIBE.name());
         relationshipRepository.save(relationship);
         return true;
 
@@ -147,17 +147,17 @@ public class EmailServiceImp implements EmailService {
         Optional<FriendRelationship> friendRelationship = relationshipRepository
                 .findByEmailIdAndFriendId(requestEmail.getEmailId(), targetEmail.getEmailId());
         if (friendRelationship.isPresent()) {
-            if (friendRelationship.get().getStatus().contains(FriendStatus.BLOCK.name())) {
+            if (friendRelationship.get().getStatus().contains(FriendStatusEnum.BLOCK.name())) {
                 throw new WrongRequirementException("This email has already being blocked !!");
             }
             FriendRelationship friendRelationship1 = friendRelationship.get();
-            friendRelationship1.setStatus(String.valueOf(FriendStatus.BLOCK));
+            friendRelationship1.setStatus(String.valueOf(FriendStatusEnum.BLOCK));
             relationshipRepository.save(friendRelationship.get());
             return true;
         }
 
         FriendRelationship relationship = new FriendRelationship
-                (requestEmail.getEmailId(), targetEmail.getEmailId(), FriendStatus.BLOCK.name());
+                (requestEmail.getEmailId(), targetEmail.getEmailId(), FriendStatusEnum.BLOCK.name());
         relationshipRepository.save(relationship);
         return true;
     }
@@ -173,7 +173,7 @@ public class EmailServiceImp implements EmailService {
         List<FriendRelationship> relationshipList = relationshipRepository
                 .findByEmailId(senderEmail.get().getEmailId());
         relationshipList.removeIf(friendRelationship
-                -> friendRelationship.getStatus().contains(FriendStatus.BLOCK.name()));
+                -> friendRelationship.getStatus().contains(FriendStatusEnum.BLOCK.name()));
         List<String> listFriendsAndSubscribers = relationshipList.stream()
                 .map(i -> emailRepository.findById(i.getFriendId()).get().getEmail())
                 .collect(Collectors.toList());
