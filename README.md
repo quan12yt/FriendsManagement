@@ -89,7 +89,7 @@
                   
 **Show list friends of an email**
 ----
-Return json that contains list emails and number of emails 
+Return json that contains list emails and the amount of them . 
 * **URL**
 
    `/emails/friends`
@@ -399,6 +399,71 @@ Return json that contains list emails and number of emails
                       "description": "uri=/emails/add"
                   }` <br /><br />
                  
+-------------------------------------------------------------------
+**Return list emails that were friend , subcribers, or be mentioned  of an given email**
+----
+* **URL**
+
+   `/emails/retreive`
+  
+* **METHOD**
+
+  `POST`
+  
+* **Request Json**
+
+  ` {
+    "sender": "hauhoang@gmail.com",
+    "text": "Hello hauhoang@gmail.com quan12@gmail.com"
+}`
+* **Success Response**
+   * **Code:** `200 OK` <br />
+   **Content:**
+  `{
+    "success": "true",
+    "recipients": [
+        "quan12@gmail.com",
+        "anhthus@gmail.com",
+        "hauhoang@gmail.com",
+        "gay@gmail.com"
+    ]
+}`
+   `<br /> OR <br />
+   
+   * **Code:** `204 NOT FOUND` <br />
+   **Content:**
+  `{
+    1
+   }`
+   
+* **Error Response:**
+   * **Request Error:** <br />
+             **Code:** `400 BAD REQUEST` <br /><br />
+             **Content:** 
+             `{
+                "error": [
+                    "Sender email must not be null or empty"
+                ],
+                "timestamp": "2020-11-20T06:35:25.066+00:00",
+                "status": 400
+            }`<br /><br />
+               OR<br /><br />
+             **Code:** `400 BAD REQUEST` <br />
+             **Content:** `{
+                "statusCode": 400,
+                "message": "Invalid sender email",
+                "timestamp": "2020-11-20T06:36:17.779+00:00",
+                "description": "uri=/emails/retrieve"
+            }` <br /><br />           
+  -------
+    * **Data Error:** <br />
+             **Code:** `404 NOT FOUND` <br />
+                   **Content:** `{
+                      "statusCode": 404,
+                      "message": "Sender mail not existed",
+                      "timestamp": "2020-11-20T06:37:07.819+00:00",
+                      "description": "uri=/emails/retrieve"
+                  }` <br /><br />              
 
 
 
