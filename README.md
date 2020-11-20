@@ -2,7 +2,6 @@
 
 **Add friend connection between two emails**
 ----
-Return json that contains list emails and number of emails 
 * **URL**
 
    `/emails/add`
@@ -154,7 +153,6 @@ Return json that contains list emails and number of emails
     
 **Return list mutual friend's email between among two emails**
 ----
-Return json that contains list emails and number of emails 
 * **URL**
 
    `/emails/common`
@@ -233,7 +231,6 @@ Return json that contains list emails and number of emails
     
 **Subscribe to an email**
 ----
-Return json that contains list emails and number of emails 
 * **URL**
 
    `/emails/subscribe`
@@ -254,7 +251,7 @@ Return json that contains list emails and number of emails
   `{
     "success": "true"
    }`
-   `<br /> OR <br />
+   `<br /> 
    
 * **Error Response:**
    * **Request Error:** <br />
@@ -323,6 +320,87 @@ Return json that contains list emails and number of emails
                       "description": "uri=/emails/add"
                   }` <br /><br />
                  
+-----------------------------------------------------------
+    
+**Block an email**
+----
+* **URL**
+
+   `/emails/block`
+  
+* **METHOD**
+
+  `PUT`
+  
+* **Request Json**
+
+  ` {   
+    "requester": "hauhoang@gmail.com",   
+    "target": "huynhquang@gmail.com"
+}`
+* **Success Response**
+   * **Code:** `201 CREATED` <br />
+   **Content:**
+  `{
+    "success": "true"
+   }`
+   `<br /> 
+   
+* **Error Response:**
+   * **Request Error:** <br />
+             **Code:** `400 BAD REQUEST` <br /><br />
+             **Content:** 
+             `{
+                "error": [
+                    "Requester email must not be empty or null",
+                    "Target email must not be empty or null"
+                ],
+                "timestamp": "2020-11-20T04:35:24.158+00:00",
+                "status": 400
+            }`<br /><br />
+               OR<br /><br />
+             **Code:** `400 BAD REQUEST` <br />
+             **Content:** `{
+                "statusCode": 400,
+                "message": "Must contains 2 emails",
+                "timestamp": "2020-11-19T03:53:23.759+00:00",
+                "description": "uri=/emails/add"
+            }` <br /><br />
+            OR<br /><br />
+             **Code:** `400 BAD REQUEST` <br />
+             **Content:** `{
+                "statusCode": 400,
+                "message": "Invalid requester or target email",
+                "timestamp": "2020-11-20T04:36:23.056+00:00",
+                "description": "uri=/emails/subscribe"
+            }` <br /><br />
+             OR<br /><br />
+             **Code:** `400 BAD REQUEST` <br />
+             **Content:** `{
+                "statusCode": 400,
+                "message": "Same email error",
+                "timestamp": "2020-11-19T04:16:27.903+00:00",
+                "description": "uri=/emails/add"
+            }` <br /><br />
+  -------
+    * **Data Error:** <br />
+             **Code:** `404 NOT FOUND` <br />
+                   **Content:** `{
+                      "statusCode": 404,
+                      "message": "Requester or target email not existed",
+                      "timestamp": "2020-11-19T04:17:26.364+00:00",
+                      "description": "uri=/emails/add"
+                  }` <br /><br />
+                  *Code:** `400 BAD REQUEST` <br />
+                   **Content:** `{
+                      "statusCode": 404,
+                      "message": "This email has already being blocked !!",
+                      "timestamp": "2020-11-19T04:17:26.364+00:00",
+                      "description": "uri=/emails/add"
+                  }` <br /><br />
+                 
+
+
 
 
 
