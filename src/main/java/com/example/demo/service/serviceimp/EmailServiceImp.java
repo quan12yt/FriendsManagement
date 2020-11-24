@@ -1,6 +1,6 @@
 package com.example.demo.service.serviceimp;
 
-import com.example.demo.exception.EmailNotFoundException;
+import com.example.demo.exception.DataNotFoundException;
 import com.example.demo.exception.WrongRequirementException;
 import com.example.demo.model.Email;
 import com.example.demo.model.FriendRelationship;
@@ -33,7 +33,7 @@ public class EmailServiceImp implements EmailService {
     public List<String> getFriendList(EmailRequest emailRequest) {
         Optional<Email> requestEmailOptional = emailRepository.findByEmail(emailRequest.getEmail());
         if (requestEmailOptional.isEmpty()) {
-            throw new EmailNotFoundException("Email not found in database");
+            throw new DataNotFoundException("Email not found in database");
         }
         Email requestEmail = requestEmailOptional.get();
         return relationshipRepository
@@ -51,7 +51,7 @@ public class EmailServiceImp implements EmailService {
         Optional<Email> optionalFriendEmail = emailRepository
                 .findByEmail(friendRequest.getFriends().get(1));
         if (optionalEmail.isEmpty() || optionalFriendEmail.isEmpty()) {
-            throw new EmailNotFoundException("Both emails have to be in database");
+            throw new DataNotFoundException("Both emails have to be in database");
         }
         Email email = optionalEmail.get();
         Email friendEmail = optionalFriendEmail.get();
@@ -86,7 +86,7 @@ public class EmailServiceImp implements EmailService {
         Optional<Email> optionalTarget = emailRepository
                 .findByEmail(friendRequest.getFriends().get(1));
         if (optionalRequester.isEmpty() || optionalTarget.isEmpty()) {
-            throw new EmailNotFoundException("Email not exist");
+            throw new DataNotFoundException("Email not exist");
         }
         List<String> friendsOfRequester = relationshipRepository
                 .findByEmailIdAndStatus
@@ -109,7 +109,7 @@ public class EmailServiceImp implements EmailService {
         Optional<Email> optionalTarget = emailRepository
                 .findByEmail(subscribeRequest.getTarget());
         if (optionalRequester.isEmpty() || optionalTarget.isEmpty()) {
-            throw new EmailNotFoundException("Requester or target email not existed");
+            throw new DataNotFoundException("Requester or target email not existed");
         }
         Email requestEmail = optionalRequester.get();
         Email targetEmail = optionalTarget.get();
@@ -140,7 +140,7 @@ public class EmailServiceImp implements EmailService {
         Optional<Email> optionalTarget = emailRepository
                 .findByEmail(subscribeRequest.getTarget());
         if (optionalRequester.isEmpty() || optionalTarget.isEmpty()) {
-            throw new EmailNotFoundException("Requester or target email not existed");
+            throw new DataNotFoundException("Requester or target email not existed");
         }
         Email requestEmail = optionalRequester.get();
         Email targetEmail = optionalTarget.get();
@@ -166,7 +166,7 @@ public class EmailServiceImp implements EmailService {
     public Set<String> retrieveEmails(RetrieveRequest retrieveRequest) {
         Optional<Email> senderEmail = emailRepository.findByEmail(retrieveRequest.getSender());
         if (senderEmail.isEmpty()) {
-            throw new EmailNotFoundException("Sender mail not existed");
+            throw new DataNotFoundException("Sender mail not existed");
         }
         Set<String> emailList = emailUtil.getEmailsFromText(retrieveRequest.getText());
         emailList.removeIf(s -> emailRepository.findByEmail(s).isEmpty());

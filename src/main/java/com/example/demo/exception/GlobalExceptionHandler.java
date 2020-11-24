@@ -29,9 +29,9 @@ public class GlobalExceptionHandler {
                 , webRequest.getDescription(false));
     }
 
-    @ExceptionHandler(EmailNotFoundException.class)
+    @ExceptionHandler(DataNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorMessage emailNotFound(EmailNotFoundException ex, WebRequest webRequest) {
+    public ErrorMessage emailNotFound(DataNotFoundException ex, WebRequest webRequest) {
         return new ErrorMessage(HttpStatus.NOT_FOUND.value()
                 , ex.getMessage()
                 , new Date()

@@ -1,7 +1,7 @@
 package unittest;
 
 import com.example.demo.FriendManagementApplication;
-import com.example.demo.exception.EmailNotFoundException;
+import com.example.demo.exception.DataNotFoundException;
 import com.example.demo.exception.WrongRequirementException;
 import com.example.demo.request.AddAndGetCommonRequest;
 import com.example.demo.request.EmailRequest;
@@ -158,7 +158,7 @@ public class EmailControllerTest {
         String json = objectMapper.writeValueAsString(emailRequest);
 
         when(emailService.getFriendList(any(EmailRequest.class)))
-                .thenThrow(new EmailNotFoundException("Email not found in database"));
+                .thenThrow(new DataNotFoundException("Email not found in database"));
 
         mockMvc.perform(post("/emails/friends")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -394,7 +394,7 @@ public class EmailControllerTest {
         addCommonRequest.setFriends(Arrays.asList("mous@gmail.com", "famous@gmail.com"));
 
         when(emailService.getCommonFriends(any(AddAndGetCommonRequest.class)))
-                .thenThrow(new EmailNotFoundException("Email not exist"));
+                .thenThrow(new DataNotFoundException("Email not exist"));
 
         String json = objectMapper.writeValueAsString(addCommonRequest);
         mockMvc.perform(post("/emails/common")
@@ -487,7 +487,7 @@ public class EmailControllerTest {
         subBlockRequest.setTarget("target@gmail.com");
 
         when(emailService.subscribeTo(any(SubscribeAndBlockRequest.class)))
-                .thenThrow(new EmailNotFoundException("Requester or target email not existed"));
+                .thenThrow(new DataNotFoundException("Requester or target email not existed"));
 
         String json = objectMapper.writeValueAsString(subBlockRequest);
 
@@ -648,7 +648,7 @@ public class EmailControllerTest {
         subBlockRequest.setTarget("target@gmail.com");
 
         when(emailService.blockEmail(any(SubscribeAndBlockRequest.class)))
-                .thenThrow(new EmailNotFoundException("Requester or target email not existed"));
+                .thenThrow(new DataNotFoundException("Requester or target email not existed"));
 
         String json = objectMapper.writeValueAsString(subBlockRequest);
 
@@ -727,7 +727,7 @@ public class EmailControllerTest {
         retrieveRequest = new RetrieveRequest("vuiquanghu@gmail.com", "Hello haong@gmail.com");
 
         when(emailService.retrieveEmails(any(RetrieveRequest.class)))
-                .thenThrow(new EmailNotFoundException("Email not existed"));
+                .thenThrow(new DataNotFoundException("Email not existed"));
 
         String json = objectMapper.writeValueAsString(retrieveRequest);
 
