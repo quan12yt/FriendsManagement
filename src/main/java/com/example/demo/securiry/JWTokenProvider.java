@@ -25,7 +25,7 @@ public class JWTokenProvider {
                 .compact();
     }
 
-    public Long getUserIdFromJWT(String token){
+    public Long getUserIdFromJWT(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(JWT_SECRET)
                 .parseClaimsJws(token)
@@ -33,23 +33,19 @@ public class JWTokenProvider {
         return Long.valueOf(claims.getSubject());
     }
 
-    public boolean validateToken(String token){
+    public boolean validateToken(String token) {
         try {
             Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(token);
             return true;
-        }catch (SignatureException ex){
+        } catch (SignatureException ex) {
             log.error(ex.getMessage());
-        }
-        catch (MalformedJwtException ex){
+        } catch (MalformedJwtException ex) {
             log.error(ex.getMessage());
-        }
-        catch (ExpiredJwtException ex){
+        } catch (ExpiredJwtException ex) {
             log.error(ex.getMessage());
-        }
-        catch (UnsupportedJwtException ex){
+        } catch (UnsupportedJwtException ex) {
             log.error(ex.getMessage());
-        }
-        catch (IllegalArgumentException ex){
+        } catch (IllegalArgumentException ex) {
             log.error(ex.getMessage());
         }
         return false;

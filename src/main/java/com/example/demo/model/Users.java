@@ -1,10 +1,12 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Data
@@ -23,4 +25,10 @@ public class Users {
 
     @Column(name = "password")
     private String password;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id")
+            , inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JsonIgnoreProperties("users")
+    private Set<Roles> roles;
 }
