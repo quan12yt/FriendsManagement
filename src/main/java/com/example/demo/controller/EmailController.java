@@ -1,13 +1,13 @@
 package com.example.demo.controller;
 
 import com.example.demo.exception.InputInvalidException;
-import com.example.demo.request.AddAndGetCommonRequest;
-import com.example.demo.request.EmailRequest;
-import com.example.demo.request.RetrieveRequest;
-import com.example.demo.request.SubscribeAndBlockRequest;
-import com.example.demo.response.GetFriendsAndCommonResponse;
-import com.example.demo.response.RetrieveEmailResponse;
-import com.example.demo.response.SuccessResponse;
+import com.example.demo.dto.request.AddAndGetCommonRequest;
+import com.example.demo.dto.request.EmailRequest;
+import com.example.demo.dto.request.RetrieveRequest;
+import com.example.demo.dto.request.SubscribeAndBlockRequest;
+import com.example.demo.dto.response.GetFriendsAndCommonResponse;
+import com.example.demo.dto.response.RetrieveEmailResponse;
+import com.example.demo.dto.response.SuccessResponse;
 import com.example.demo.service.EmailService;
 import com.example.demo.utils.EmailValidation;
 import com.example.demo.utils.RequestValidation;
@@ -26,6 +26,7 @@ import java.util.Set;
 public class EmailController {
     @Autowired
     private EmailService emailService;
+
 
     // add a friend relationship
     @PostMapping("/add")

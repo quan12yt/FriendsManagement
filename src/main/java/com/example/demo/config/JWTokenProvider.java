@@ -1,4 +1,4 @@
-package com.example.demo.securiry;
+package com.example.demo.config;
 
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +11,7 @@ import java.util.Date;
 public class JWTokenProvider {
 
     private final String JWT_SECRET = "Jason";
-    private final Long JWT_EXPIRATION = 604800000L;
+    private final Long JWT_EXPIRATION = 604800L;
 
     public String generateJWT(CustomUserDetails userDetails) {
         Date date = new Date();

@@ -1,4 +1,4 @@
-package com.example.demo.securiry;
+package com.example.demo.config;
 
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
     }
 
+
     @Override
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder)
             throws Exception {
@@ -64,8 +65,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/login").permitAll()
-                .antMatchers(HttpMethod.POST, "/email/friends").authenticated()
+                .antMatchers("/swagger2-demo/v2/api-docs").permitAll()
+                .antMatchers(HttpMethod.POST, "/auth/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()

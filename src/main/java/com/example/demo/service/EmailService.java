@@ -1,9 +1,9 @@
 package com.example.demo.service;
 
-import com.example.demo.request.AddAndGetCommonRequest;
-import com.example.demo.request.EmailRequest;
-import com.example.demo.request.RetrieveRequest;
-import com.example.demo.request.SubscribeAndBlockRequest;
+import com.example.demo.dto.request.AddAndGetCommonRequest;
+import com.example.demo.dto.request.EmailRequest;
+import com.example.demo.dto.request.RetrieveRequest;
+import com.example.demo.dto.request.SubscribeAndBlockRequest;
 
 import java.util.List;
 import java.util.Set;

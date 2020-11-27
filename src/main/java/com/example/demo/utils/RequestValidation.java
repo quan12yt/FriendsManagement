@@ -1,8 +1,8 @@
 package com.example.demo.utils;
 
-import com.example.demo.request.AddAndGetCommonRequest;
-import com.example.demo.request.RetrieveRequest;
-import com.example.demo.request.SubscribeAndBlockRequest;
+import com.example.demo.dto.request.AddAndGetCommonRequest;
+import com.example.demo.dto.request.RetrieveRequest;
+import com.example.demo.dto.request.SubscribeAndBlockRequest;
 
 public class RequestValidation {
 

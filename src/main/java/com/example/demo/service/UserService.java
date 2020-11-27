@@ -3,7 +3,7 @@ package com.example.demo.service;
 import com.example.demo.exception.DataNotFoundException;
 import com.example.demo.model.Users;
 import com.example.demo.repository.UserRepository;
-import com.example.demo.securiry.CustomUserDetails;
+import com.example.demo.config.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

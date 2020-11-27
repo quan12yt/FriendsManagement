@@ -1,17 +1,16 @@
-package com.example.demo.response;
+package com.example.demo.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetFriendsAndCommonResponse {
-    private String success;
+public class AddAndGetCommonRequest {
+    @NotNull(message = "List email must not be null or empty")
     private List<String> friends;
-    private Integer count;
-
 }

@@ -1,9 +1,9 @@
 package com.example.demo.controller;
 
-import com.example.demo.request.LoginRequest;
-import com.example.demo.response.LoginResponse;
-import com.example.demo.securiry.CustomUserDetails;
-import com.example.demo.securiry.JWTokenProvider;
+import com.example.demo.dto.request.LoginRequest;
+import com.example.demo.dto.response.LoginResponse;
+import com.example.demo.config.CustomUserDetails;
+import com.example.demo.config.JWTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +21,8 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/")
-public class UserController {
+@RequestMapping("auth/")
+public class AuthController {
 
     @Autowired
     private JWTokenProvider jwTokenProvider;

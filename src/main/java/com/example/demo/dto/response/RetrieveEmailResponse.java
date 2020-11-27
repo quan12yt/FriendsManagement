@@ -1,12 +1,15 @@
-package com.example.demo.response;
+package com.example.demo.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SuccessResponse {
+public class RetrieveEmailResponse {
     private String success;
+    private Set<String> recipients;
 }

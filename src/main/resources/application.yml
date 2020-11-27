@@ -13,3 +13,4 @@ spring:
     password: postgres
   main:
     banner-mode: off
+
