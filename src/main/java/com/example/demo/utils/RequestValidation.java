@@ -6,12 +6,15 @@ import com.example.demo.dto.request.SubscribeAndBlockRequest;
 
 public class RequestValidation {
 
-    public static String checkAddAndSubscribeRequest(AddAndGetCommonRequest request) {
+    public static String checkAddAndGetCommonRequest(AddAndGetCommonRequest request) {
         if (request == null || request.getFriends() == null) {
             return "Invalid request";
         }
         if (request.getFriends().size() != 2) {
             return "Must contains 2 emails";
+        }
+        if (request.getFriends().get(0) ==null || request.getFriends().get(1) ==null) {
+            return "Invalid request";
         }
         if (!EmailValidation.isEmail(request.getFriends().get(0))
                 || !EmailValidation.isEmail(request.getFriends().get(1))) {

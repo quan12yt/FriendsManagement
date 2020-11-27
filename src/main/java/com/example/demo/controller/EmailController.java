@@ -31,8 +31,9 @@ public class EmailController {
     // add a friend relationship
     @PostMapping("/add")
     @PreAuthorize("hasRole('MEMBER') or hasRole('ADMIN')")
-    public ResponseEntity<SuccessResponse> addFriend(@Valid @RequestBody AddAndGetCommonRequest friendRequest) {
-        String error = RequestValidation.checkAddAndSubscribeRequest(friendRequest);
+    public ResponseEntity<SuccessResponse> addFriend(
+            @Valid @RequestBody AddAndGetCommonRequest friendRequest) {
+        String error = RequestValidation.checkAddAndGetCommonRequest(friendRequest);
         if (!error.equals("")) {
             throw new InputInvalidException(error);
         }
@@ -43,8 +44,9 @@ public class EmailController {
     //get list mutual friends from 2 emails
     @PostMapping("/common")
     @PreAuthorize("hasRole('MEMBER') or hasRole('ADMIN')")
-    public ResponseEntity<GetFriendsAndCommonResponse> getCommonFriends(@Valid @RequestBody AddAndGetCommonRequest friendRequest) {
-        String error = RequestValidation.checkAddAndSubscribeRequest(friendRequest);
+    public ResponseEntity<GetFriendsAndCommonResponse> getCommonFriends(
+            @Valid @RequestBody AddAndGetCommonRequest friendRequest) {
+        String error = RequestValidation.checkAddAndGetCommonRequest(friendRequest);
         if (!error.equals("")) {
             throw new InputInvalidException(error);
         }
@@ -59,7 +61,8 @@ public class EmailController {
     //get list friends of an email
     @PostMapping("/friends")
     @PreAuthorize("hasRole('MEMBER') or hasRole('ADMIN')")
-    public ResponseEntity<GetFriendsAndCommonResponse> getFriends(@Valid @RequestBody EmailRequest emailRequest) {
+    public ResponseEntity<GetFriendsAndCommonResponse> getFriends(
+            @Valid @RequestBody EmailRequest emailRequest) {
         if (emailRequest == null) {
             throw new InputInvalidException("Invalid request");
         }
@@ -77,7 +80,8 @@ public class EmailController {
     //subscribe to an email
     @PutMapping("/subscribe")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<SuccessResponse> subscribeTo(@Valid @RequestBody SubscribeAndBlockRequest subscribeRequest) {
+    public ResponseEntity<SuccessResponse> subscribeTo(
+            @Valid @RequestBody SubscribeAndBlockRequest subscribeRequest) {
         String error = RequestValidation.checkSubscribeAndBlockRequest(subscribeRequest);
         if (!error.equals("")) {
             throw new InputInvalidException(error);
@@ -89,7 +93,8 @@ public class EmailController {
     //block an email
     @PutMapping("/block")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<SuccessResponse> blockEmail(@Valid @RequestBody SubscribeAndBlockRequest subscribeRequest) {
+    public ResponseEntity<SuccessResponse> blockEmail(
+            @Valid @RequestBody SubscribeAndBlockRequest subscribeRequest) {
         String error = RequestValidation.checkSubscribeAndBlockRequest(subscribeRequest);
         if (!error.equals("")) {
             throw new InputInvalidException(error);
@@ -101,7 +106,8 @@ public class EmailController {
     //retrieve contacted email addresses of an email
     @PostMapping("/retrieve")
     @PreAuthorize("hasRole('MEMBER') or hasRole('ADMIN')")
-    public ResponseEntity<RetrieveEmailResponse> retrieveEmail(@Valid @RequestBody RetrieveRequest retrieveRequest) {
+    public ResponseEntity<RetrieveEmailResponse> retrieveEmail(
+            @Valid @RequestBody RetrieveRequest retrieveRequest) {
         String error = RequestValidation.checkRetrieveRequest(retrieveRequest);
         if (!error.equals("")) {
             throw new InputInvalidException(error);
